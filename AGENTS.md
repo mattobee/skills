@@ -19,8 +19,9 @@ LICENSE                       # MIT
 
 1. Create `skills/[skill-name]/SKILL.md` with required frontmatter (`name`, `description`) and instructions.
 2. The `name` field must match the directory name exactly. Lowercase, hyphens only, no consecutive hyphens, 1–64 characters.
-3. Add the skill to the "Available Skills" section in `README.md` with a description and install command.
-4. Keep `SKILL.md` under 500 lines. Move detailed reference material to `references/`.
+3. Skill names use gerund form (e.g., `designing-agent-teams`, `suggesting-next-steps`, not `agent-team-design` or `next-steps`).
+4. Add the skill to the "Available Skills" section in `README.md` with a description and install command.
+5. Keep `SKILL.md` under 500 lines. Move detailed reference material to `references/`.
 
 ## Writing Style
 
