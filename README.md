@@ -4,20 +4,24 @@ Agent skills for coding agents. Built on the [Agent Skills](https://agentskills.
 
 ## Available Skills
 
-### designing-agent-teams
-
-Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces team reasoning documents and agent instruction files that work across platforms.
-
-## Installation
+You can install all skills in one go with:
 
 ```bash
 npx skills add mattobee/skills
 ```
 
-Or install a specific skill:
+### designing-agent-teams
+
+Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces team reasoning documents and agent instruction files that work across platforms.
 
 ```bash
 npx skills add mattobee/skills --skill designing-agent-teams
+```
+
+## Install all skills
+
+```bash
+npx skills add mattobee/skills
 ```
 
 ## License
