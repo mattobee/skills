@@ -20,18 +20,6 @@ Or install a specific skill:
 npx skills add mattobee/skills --skill designing-agent-teams
 ```
 
-## Setting Model Preferences
-
-The skill uses three generic tiers — **frontier**, **mid-tier**, and **fast** — instead of provider-specific model names. When it generates agent configs, you substitute the model IDs from your provider.
-
-| Tier     | Role                      | Anthropic     | OpenAI              | Google                |
-| -------- | ------------------------- | ------------- | ------------------- | --------------------- |
-| Frontier | Lead, planning            | Claude Opus   | GPT-4o / o3         | Gemini 2.5 Pro        |
-| Mid-tier | Implementation, testing   | Claude Sonnet | GPT-4.1             | Gemini 2.5 Flash      |
-| Fast     | Exploration, simple edits | Claude Haiku  | GPT-4.1 mini / nano | Gemini 2.0 Flash-Lite |
-
-Models and naming change frequently. Check your provider's current model lineup when configuring agents. See `skills/designing-agent-teams/references/model-guide.md` for full assignment heuristics.
-
 ## License
 
 MIT
