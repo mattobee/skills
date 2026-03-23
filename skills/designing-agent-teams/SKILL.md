@@ -1,6 +1,6 @@
 ---
 name: designing-agent-teams
-description: Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces reasoning documents and agent instruction files. Triggers when creating a multi-agent setup for a codebase, starting a new project with an agent team, reviewing or improving an existing agent team configuration, deciding which AI model to assign to which agent role, or optimising cost/speed/quality tradeoffs across agents. Also triggers for subagent design, model routing, agent orchestration, model selection for coding agents, or comparisons of frontier vs mid-tier vs fast models for different task types.
+description: Designs and refines multi-agent coding teams with optimal model-to-role assignments. Triggers for agent team creation, review, model selection, and cost/quality tradeoffs.
 compatibility: Requires file read/write access and bash.
 ---
 
@@ -176,7 +176,6 @@ If the platform already has agent config files, read them first and merge new ag
 
 ### What not to do
 
-- Do not write outputs to `/mnt/user-data/outputs/` or any path outside the repo
 - Do not overwrite existing config files without reading them first
 - Do not remove existing agents or agent files unless explicitly asked
 - Do not duplicate full agent instructions into platform-specific config files — keep them in `.agents/*.md` and reference from platform configs
