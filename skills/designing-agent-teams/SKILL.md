@@ -70,9 +70,9 @@ Think of the agent team like a human dev team: a small core that's always presen
 
 - **Orchestrator** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one.
 - **Coder** — the developer. Implements features and fixes within scoped boundaries.
-- **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is the single highest-impact structural decision in a multi-agent team.
+- **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is one of the highest-impact structural decisions in a multi-agent team.
 
-These three are present in every team this skill generates. They form the plan-implement-verify loop that the research consistently identifies as the minimum effective team.
+These three are present in every team this skill generates. They form the plan-implement-verify loop observed across prominent multi-agent systems (MetaGPT, AgentCoder, ChatDev).
 
 **Specialist consultants (added per project):**
 
@@ -238,7 +238,7 @@ This avoids wasted specialist reviews on code that's about to change due to test
 When reviewing a team (any mode), check for:
 
 - **Missing core team member** — every team should have an orchestrator, coder, and independent tester; if any is missing, that's the first thing to fix
-- **Missing independent tester** — if the coder writes its own tests, the team is missing the highest-impact structural decision
+- **Missing independent tester** — if the coder writes its own tests, the team is missing one of the highest-impact structural decisions
 - **Overlapping write access** — in parallel setups, multiple agents with write access to the same directories will cause conflicts; in sequential setups, check that each agent's write scope matches its actual role
 - **LLM-only quality gates** — if the only check before merge is another LLM reviewing, add deterministic gates (tests, linting, type-checks)
 - **Unjustified agents** — every agent should cover a concern that would otherwise be missed; remove any that duplicate another agent's scope
