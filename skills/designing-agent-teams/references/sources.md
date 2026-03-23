@@ -24,7 +24,7 @@ LLMs confidently generate outdated API calls from stale training data. The Agent
 
 ## Platform-agnostic core outputs
 
-The [Agent Skills specification](https://agentskills.io/specification) is platform-agnostic by design — skills provide knowledge and workflows, not platform config. We follow this principle: the skill's core outputs (`.agents/*.md` instruction files and `AGENTS.md`) are plain markdown that works with any agent platform. Platform-specific config files (OpenCode, Claude Code, Cursor, etc.) are generated as thin wrappers only when the platform is detected or specified, and the skill consults the platform's own documentation for current config syntax rather than bundling format references that go stale.
+The [Agent Skills specification](https://agentskills.io/specification) is platform-agnostic by design — skills provide knowledge and workflows, not platform config. Following this principle, the core outputs (`.agents/*.md` instruction files and `AGENTS.md`) are plain markdown that works with any agent platform. Platform-specific config files (OpenCode, Claude Code, Cursor, etc.) are generated as thin wrappers only when the platform is detected or specified, and the skill consults the platform's own documentation for current config syntax rather than bundling format references that go stale.
 
 ## Generic model tiers instead of provider-specific names
 
