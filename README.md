@@ -32,9 +32,9 @@ The skill uses three generic tiers — **frontier**, **mid-tier**, and **fast** 
 
 Models and naming change frequently. Check your provider's current model lineup when configuring agents. See `skills/designing-agent-teams/references/model-guide.md` for full assignment heuristics.
 
-## Sources
+## Rationale
 
-The skill's design principles draw on published research, the [Agent Skills](https://agentskills.io) specification, and practitioner experience. See `skills/designing-agent-teams/references/sources.md` for claim-by-claim sourcing and evidence categories.
+The design principles draw on published research, the [Agent Skills](https://agentskills.io) specification, and practitioner experience. See `skills/designing-agent-teams/references/rationale.md` for each decision and its source.
 
 ## License
 

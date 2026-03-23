@@ -1,4 +1,4 @@
-# Sources
+# Rationale
 
 Design decisions and where they come from. The agent never loads this file — it's for humans reviewing the skill.
 
