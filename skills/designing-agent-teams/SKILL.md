@@ -1,12 +1,12 @@
 ---
 name: designing-agent-teams
-description: Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments for OpenCode and Claude Code. Produces reasoning documents and ready-to-paste configuration files. Triggers when creating a multi-agent setup for a codebase, starting a new project with an agent team, reviewing or improving an existing agent team configuration, deciding which AI model to assign to which agent role, or optimising cost/speed/quality tradeoffs across agents. Also triggers for subagent design, model routing, agent orchestration, model selection for coding agents, or comparisons of Opus vs Sonnet vs Haiku for different task types.
-compatibility: Requires file read/write access and bash. Designed for Claude Code and OpenCode but output formats are portable.
+description: Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces reasoning documents and agent instruction files. Triggers when creating a multi-agent setup for a codebase, starting a new project with an agent team, reviewing or improving an existing agent team configuration, deciding which AI model to assign to which agent role, or optimising cost/speed/quality tradeoffs across agents. Also triggers for subagent design, model routing, agent orchestration, model selection for coding agents, or comparisons of frontier vs mid-tier vs fast models for different task types.
+compatibility: Requires file read/write access and bash.
 ---
 
 # Designing Agent Teams
 
-Generate multi-agent coding teams with optimal model assignments. Outputs a reasoning document (`AGENTS.md`) plus ready-to-paste configs for OpenCode and Claude Code.
+Generate multi-agent coding teams with optimal model assignments. Outputs a reasoning document (`AGENTS.md`) plus agent instruction files (`.agents/`) and platform-specific configs where applicable.
 
 ## Determine the mode
 
@@ -40,14 +40,14 @@ Gather what is available from the codebase and the user's request. If the user h
 
 ### Add to existing team
 
-- Read the existing agent configuration files (`.opencode/agents/`, `.agents/`, `CLAUDE.md`) to understand the current team: roles, models, tools, escalation paths
+- Read the existing agent configuration files (`.agents/`, `AGENTS.md`, and any platform-specific configs) to understand the current team: roles, models, tools, escalation paths
 - Identify what the new agent needs to cover — this may come from the user's request (e.g., "I just added Supabase and need an agent for edge functions") or from detecting a new dependency/tool in the codebase
 - Determine where the new agent fits in the existing orchestration: who delegates to it, who it escalates to, and what scope boundaries it needs to respect relative to existing agents
 - Check for overlap — if an existing agent already covers the concern partially, consider expanding that agent's prompt instead of adding a new one
 
 ### Review
 
-- Read the existing agent configuration files (check `.opencode/agents/`, `.agents/`, and `CLAUDE.md`)
+- Read the existing agent configuration files (check `.agents/`, `AGENTS.md`, and any platform-specific configs)
 - Identify which models are assigned where, what tools each agent has, scope definitions
 - Apply the review checklist (below) to identify issues
 - If the user has described specific pain points, prioritise those
@@ -56,16 +56,11 @@ Gather what is available from the codebase and the user's request. If the user h
 
 Read `references/model-guide.md` for current model characteristics, pricing, and assignment heuristics.
 
-Read the relevant config reference:
-
-- `references/opencode-config.md` for OpenCode agent definitions
-- `references/claude-code-config.md` for Claude Code subagent patterns
-
 Apply these principles in order:
 
 **1. Start from roles, not models.** Identify what agent roles the project needs before choosing models.
 
-**2. Consider whether a team is needed at all.** A well-prompted single agent with a good spec handles many projects effectively. Multi-agent coordination adds the most value when a single agent's accuracy is below ~45% on the task, or when the project has clearly parallelisable work streams with independent file boundaries. For simple projects, a single Sonnet agent with a clear AGENTS.md spec may outperform a poorly-coordinated team.
+**2. Consider whether a team is needed at all.** A well-prompted single agent with a good spec handles many projects effectively. Multi-agent coordination adds the most value when a single agent's accuracy is below ~45% on the task, or when the project has clearly parallelisable work streams with independent file boundaries. For simple projects, a single mid-tier agent with a clear AGENTS.md spec may outperform a poorly-coordinated team.
 
 **3. Assemble the core team, then bring in specialists.**
 
@@ -83,9 +78,9 @@ These three are present in every team this skill generates. They form the plan-i
 
 Bring in specialists based on what the project needs. Each should cover a cross-cutting concern that the core team would otherwise miss or handle inconsistently:
 
-- **Accessibility reviewer** — for web projects; checks changes against WCAG, flags inaccessible patterns
-- **Security auditor** — for auth-heavy, payment, or user-data projects; audits auth flows, input validation, dependencies
-- **Performance reviewer** — for latency-sensitive or resource-constrained projects
+- **Accessibility specialist** — for web projects; assesses plans for a11y risks before implementation, reviews changes against WCAG
+- **Security specialist** — for auth-heavy, payment, or user-data projects; assesses plans for security risks, reviews auth flows, input validation, dependencies
+- **Performance specialist** — for latency-sensitive or resource-constrained projects; flags performance risks in proposed approaches, reviews implementation for bottlenecks
 - **Documentation writer** — for libraries, APIs, and long-lived projects; keeps docs in sync with changes
 - **Platform specialist** — for projects using 3+ external platforms (e.g., Supabase, Stripe, Sanity) where a single agent's context window can't hold all the platform tools simultaneously
 
@@ -93,9 +88,9 @@ Prefer cross-cutting concern specialists (security, accessibility, performance) 
 
 **4. Match cognitive demand to model tier.** See `references/model-guide.md` for the full heuristics. Summary:
 
-- **Opus** — orchestration, architectural planning, complex debugging, pre-merge review
-- **Sonnet** — code generation, independent test writing, feature implementation, standard refactoring
-- **Haiku** — file exploration, boilerplate, docstrings, grep-style searches, simple edits
+- **Frontier** — orchestration, architectural planning, complex debugging, pre-merge review
+- **Mid-tier** — code generation, independent test writing, feature implementation, standard refactoring
+- **Fast** — file exploration, boilerplate, docstrings, grep-style searches, simple edits
 
 **5. Prevent write conflicts.** How strictly to scope write access depends on whether agents run in parallel or sequentially:
 
@@ -117,43 +112,42 @@ In both cases, when a task genuinely crosses boundaries, the orchestrator should
 
 **9. Use deterministic quality gates.** Do not rely on an LLM to judge whether its own work is good enough. Quality gates should be automated and deterministic: linting, type-checking, test pass rates, build success. An LLM reviewer in a fresh context adds value for nuanced issues (security patterns, architectural fit), but the primary gate must be tooling, not judgment.
 
-**10. Target the 70/20/10 split.** Roughly 70% Haiku, 20% Sonnet, 10% Opus by call volume. If more than 30% of calls go to Opus, re-examine whether those tasks genuinely need frontier reasoning.
+**10. Target the 70/20/10 split.** Roughly 70% fast, 20% mid-tier, 10% frontier by call volume. If more than 30% of calls go to frontier models, re-examine whether those tasks genuinely need top-tier reasoning.
 
 ## Generate outputs
 
-All outputs go into the current working directory (the project repo root). The output structure is:
+All outputs go into the current working directory (the project repo root).
+
+### Core outputs (always generated)
+
+These are platform-agnostic and work with any agent that can read markdown files:
 
 ```
+AGENTS.md                  # Team overview, orchestration, escalation map (repo root)
 .agents/
-├── AGENTS.md              # Team overview, orchestration, escalation map
 ├── orchestrator.md        # Core: always present
 ├── coder.md               # Core: always present
 ├── tester.md              # Core: always present
 └── [specialist].md        # Specialists: added per project (e.g., accessibility.md, security.md)
-.opencode/
-└── agents/
-    ├── orchestrator.md    # OpenCode agent config referencing .agents/orchestrator.md
-    ├── coder.md           # OpenCode agent config referencing .agents/coder.md
-    ├── tester.md          # OpenCode agent config referencing .agents/tester.md
-    └── [specialist].md    # One per specialist
-CLAUDE.md                  # Agent team section referencing .agents/*.md
 ```
 
-The three core agent files (`orchestrator.md`, `coder.md`, `tester.md`) are always generated in both `.agents/` (full instructions) and `.opencode/agents/` (OpenCode config with frontmatter). Specialist files are added based on the project's requirements.
+#### AGENTS.md (repo root)
 
-### .agents/ directory
+Create `AGENTS.md` in the project root if it does not exist. This is the team-level document that lives at the repo root.
 
-Create `.agents/` in the project root if it does not exist.
-
-**AGENTS.md** — the team-level document. Contains:
+**AGENTS.md** contains:
 
 1. **Team overview** — purpose and project context
-2. **Agent roster** — for each agent: role name, model, one-sentence rationale, link to its instruction file
+2. **Agent roster** — for each agent: role name, model tier, one-sentence rationale, link to its instruction file
 3. **Orchestration pattern** — who calls whom, what triggers handoffs
 4. **Cost projection** — estimated call distribution and relative cost
 5. **Escalation map** — which agents escalate to which
 
-If `.agents/AGENTS.md` already exists, read it first and update in place. In **add** mode, append the new agent(s) to the roster and update the orchestration, cost, and escalation sections. Do not rewrite descriptions of unchanged agents.
+If `AGENTS.md` already exists, read it first and update in place. In **add** mode, append the new agent(s) to the roster and update the orchestration, cost, and escalation sections. Do not rewrite descriptions of unchanged agents.
+
+#### .agents/ directory
+
+Create `.agents/` in the project root if it does not exist.
 
 **Individual agent files** (e.g., `orchestrator.md`, `coder.md`, `tester.md`) — one file per agent. Each contains:
 
@@ -165,47 +159,26 @@ If `.agents/AGENTS.md` already exists, read it first and update in place. In **a
 
 Keep each agent file under 500 words. The agent's capabilities come from the model and its tools, not from lengthy instructions.
 
-### OpenCode configuration
+### Platform-specific configuration (generated when applicable)
 
-Generate one markdown file per agent in `.opencode/agents/` per `references/opencode-config.md`. Each file has YAML frontmatter (description, mode, model, permissions) and a body that references the agent's `.agents/*.md` instruction file:
+After generating the core outputs, check whether the project already has platform-specific agent configuration. Look for directories and files such as `.opencode/agents/`, `CLAUDE.md`, `.cursor/agents/`, or similar. If found, generate or update the platform-specific config files to reference the `.agents/*.md` instruction files.
 
-```markdown
----
-description: Implements features and fixes within scoped boundaries
-mode: subagent
-model: anthropic/claude-sonnet-4-20250514
-permission:
-  edit: allow
-  bash:
-    "*": ask
----
+If no existing platform config is detected, ask the user which platform they are using. If the user does not specify, generate only the core outputs — they are sufficient for most platforms to pick up.
 
-You are the Coder. Read .agents/coder.md for your full instructions.
-```
+When generating platform-specific configs:
 
-The orchestrator should be `mode: primary`. All other agents should be `mode: subagent`.
+- **Consult the platform's own documentation** for current config syntax, file format, and available fields. Do not rely on memorised config formats — platforms change their agent configuration frequently.
+- Each platform config file should be a thin wrapper that references the agent's `.agents/*.md` instruction file for the full role description. Do not duplicate instructions across files.
+- Use the model ID format appropriate for the user's provider (see `references/model-guide.md` for the tier mapping).
 
-If `.opencode/agents/` already exists, read its contents first and merge new agent files. Preserve existing agents not being replaced. If `.opencode/agents/` does not exist, create it.
-
-### Claude Code configuration
-
-Write the agent team section into `CLAUDE.md` per `references/claude-code-config.md`. Each subagent definition should reference its `.agents/*.md` file:
-
-```markdown
-### @coder
-
-Model: claude-sonnet-4-6
-Instructions: See .agents/coder.md
-```
-
-If `CLAUDE.md` already exists, read it first. Append the agent team section under `## Agent Team` rather than overwriting. If `## Agent Team` already exists, replace that section only.
+If the platform already has agent config files, read them first and merge new agents. Preserve existing agents not being replaced.
 
 ### What not to do
 
 - Do not write outputs to `/mnt/user-data/outputs/` or any path outside the repo
 - Do not overwrite existing config files without reading them first
 - Do not remove existing agents or agent files unless explicitly asked
-- Do not inline long instructions into `.opencode/agents/*.md` frontmatter or `CLAUDE.md` — use the `.agents/*.md` files
+- Do not duplicate full agent instructions into platform-specific config files — keep them in `.agents/*.md` and reference from platform configs
 
 ## Best practices
 
@@ -219,9 +192,7 @@ Add this to the orchestrator's instructions:
 
 > Before each delegation, explain which agent you are calling and why. After each agent returns, summarise what it found or did.
 
-And reinforce it in the OpenCode config preamble:
-
-> IMPORTANT: Before each delegation, explain to the user which agent you are calling and why. After each agent returns, summarise what it found or did.
+Reinforce this in any platform-specific config preamble so the orchestrator sees it at invocation time, not just in its instruction file.
 
 ### Dual-touchpoint specialists
 
@@ -255,12 +226,12 @@ This avoids wasted specialist reviews on code that's about to change due to test
 - Multiple agents writing to the same files is the most common source of broken builds in parallel agent teams. For parallel setups, scope each writing agent to distinct directories. For sequential setups, the risk is lower but still scope write access to what each agent needs — a tester writing to source code is a sign of misconfigured scope.
 - At 85% accuracy per step, a 10-step workflow succeeds only 20% of the time. Keep agent chains short and gate each step with deterministic checks (tests, linting, type-checking), not LLM self-evaluation.
 - Specialist agents without access to official docs will confidently generate outdated or wrong API calls. A Supabase agent relying on training data might use deprecated RLS syntax or old client methods. Always wire in the MCP server or documentation URL and tell the agent to check before generating.
-- Haiku has a smaller context window than Opus and Sonnet. An agent assigned to explore a large monorepo on Haiku may silently lose context. For large codebases, use Sonnet for exploration or split the search into smaller scoped calls.
-- Opus tends to refactor code beyond the requested scope. System prompts for Opus-powered agents should explicitly constrain scope ("make only the changes described in the plan, do not refactor adjacent code").
+- Fast-tier models have a smaller context window than frontier and mid-tier models. An agent assigned to explore a large monorepo on a fast model may silently lose context. For large codebases, use a mid-tier model for exploration or split the search into smaller scoped calls.
+- Frontier models tend to refactor code beyond the requested scope. System prompts for frontier-powered agents should explicitly constrain scope ("make only the changes described in the plan, do not refactor adjacent code").
 - Agent system prompts that are too long waste context on every call. Keep them under 500 words — the agent's capabilities come from the model, not from lengthy persona descriptions.
-- When merging into an existing `CLAUDE.md`, the file may contain project-specific instructions unrelated to agents. Only touch the `## Agent Team` section. Rewriting the whole file will destroy existing project configuration.
-- When adding an agent in **add** mode, create a new `.agents/[name].md` file and a corresponding `.opencode/agents/[name].md` file, and add a reference in `CLAUDE.md`. Do not rewrite existing agent files.
-- OpenCode and Claude Code handle subagent invocation differently. Do not assume one platform's patterns work on the other — always read the relevant config reference before generating.
+- When merging into an existing project-level config file (e.g., `CLAUDE.md`), it may contain project-specific instructions unrelated to agents. Only touch the agent team section. Rewriting the whole file will destroy existing project configuration.
+- When adding an agent in **add** mode, create a new `.agents/[name].md` file and a corresponding platform config file. Do not rewrite existing agent files.
+- Different platforms handle subagent invocation differently. Consult the platform's documentation for current config syntax rather than assuming one platform's patterns work on another.
 
 ## Review checklist
 
@@ -271,10 +242,10 @@ When reviewing a team (any mode), check for:
 - **Overlapping write access** — in parallel setups, multiple agents with write access to the same directories will cause conflicts; in sequential setups, check that each agent's write scope matches its actual role
 - **LLM-only quality gates** — if the only check before merge is another LLM reviewing, add deterministic gates (tests, linting, type-checks)
 - **Unjustified agents** — every agent should cover a concern that would otherwise be missed; remove any that duplicate another agent's scope
-- **Missing specialists** — if the project has accessibility, security, or compliance requirements, check whether dedicated reviewer agents are needed
-- **Over-assignment to Opus** — tasks Sonnet handles equally well
-- **Missing escalation paths** — Haiku agent stuck with no handoff route
+- **Missing specialists** — if the project has accessibility, security, or compliance requirements, check whether dedicated specialist agents are needed
+- **Over-assignment to frontier** — tasks a mid-tier model handles equally well
+- **Missing escalation paths** — fast-tier agent stuck with no handoff route
 - **Scope creep** — agent with tools or filesystem access it does not need
 - **Redundant agents** — overlapping work that could consolidate
-- **Context window pressure** — Haiku has a smaller context window than Opus/Sonnet
+- **Context window pressure** — fast-tier models have a smaller context window than frontier/mid-tier
 - **Would a single agent suffice?** — if the project is simple enough that one well-prompted agent handles it, a team adds overhead without value

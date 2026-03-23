@@ -10,54 +10,54 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 
 ## Agent Roster
 
-### 1. Orchestrator (Opus)
+### 1. Orchestrator (frontier)
 
-- **Model**: Opus
-- **Rationale**: Task decomposition across 80 source files, real-time collaboration features, and multiple domain layers. Frontier reasoning for cross-cutting architectural decisions.
+- **Model**: Frontier
+- **Rationale**: Task decomposition across 80 source files, real-time collaboration features, and multiple domain layers. Top-tier reasoning for cross-cutting architectural decisions.
 - **Tools**: read, search (read-only), git commands
 - **Scope**: Task planning, architectural decisions, review, escalation target
 - **Escalation**: Terminal
 - **Instructions**: `.agents/orchestrator.md`
 
-### 2. Coder (Sonnet)
+### 2. Coder (mid-tier)
 
-- **Model**: Sonnet
+- **Model**: Mid-tier
 - **Rationale**: Bulk implementation at the best quality/speed/cost balance. Handles React components, API routes, WebSocket handlers, and Tailwind styling.
 - **Tools**: read, write, shell, search
 - **Scope**: `src/` (excluding test files and Prisma schema)
 - **Escalation**: Orchestrator for multi-system complexity or architectural ambiguity
 - **Instructions**: `.agents/coder.md`
 
-### 3. Tester (Sonnet)
+### 3. Tester (mid-tier)
 
-- **Model**: Sonnet
+- **Model**: Mid-tier
 - **Rationale**: Independent test authorship avoids confirmation bias. Writes tests from the spec, not from the implementation.
 - **Tools**: read, write (test files only), shell (test runners only)
 - **Scope**: `src/**/*.test.ts(x)`, `e2e/**/*.spec.ts`, `e2e/fixtures/`, `e2e/helpers/`
 - **Escalation**: Orchestrator when spec is ambiguous or test failures reveal architectural issues
 - **Instructions**: `.agents/tester.md`
 
-### 4. Scout (Haiku)
+### 4. Scout (fast)
 
-- **Model**: Haiku
-- **Rationale**: Fastest and cheapest for file exploration. 80 files is well within Haiku's context window.
+- **Model**: Fast
+- **Rationale**: Fastest and cheapest for file exploration. 80 files is well within a fast model's context window.
 - **Tools**: read, search (read-only)
 - **Scope**: File discovery, pattern searching, dependency tracing, context gathering
 - **Escalation**: Coder (implementation context) or Orchestrator (scope unclear)
 - **Instructions**: `.agents/scout.md`
 
-### 5. Accessibility Specialist (Sonnet)
+### 5. Accessibility Specialist (mid-tier)
 
-- **Model**: Sonnet
+- **Model**: Mid-tier
 - **Rationale**: Enterprise clients require WCAG AA compliance. Called at two points: early (risk assessment before implementation) and late (code review after implementation).
 - **Tools**: read, search, shell (`npm run test:a11y` only)
 - **Scope**: Assesses plans for a11y risks; reviews all UI changes; does not write code
 - **Escalation**: Orchestrator for architectural a11y decisions
 - **Instructions**: `.agents/accessibility.md`
 
-### 6. Security Specialist (Sonnet)
+### 6. Security Specialist (mid-tier)
 
-- **Model**: Sonnet
+- **Model**: Mid-tier
 - **Rationale**: Multi-tenant RBAC, API keys, team invitations — security review is a cross-cutting concern. Called at two points: early (threat assessment before implementation) and late (code review after implementation).
 - **Tools**: read, search, shell (`npm audit` only)
 - **Scope**: Assesses plans for security risks; reviews auth flows, input validation, RBAC policies; does not write code
@@ -70,7 +70,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 User Request
     |
     v
-Orchestrator (Opus)
+Orchestrator (frontier)
     |
     +-- 1. @scout -> gather context, find affected files
     |
@@ -100,13 +100,13 @@ Orchestrator (Opus)
 ## Escalation Map
 
 ```
-Scout (Haiku) ---------> Coder (Sonnet) --> Orchestrator (Opus)
-                                         /
-Tester (Sonnet) -----------------------'
-                                         /
-A11y Specialist (Sonnet) --------------'
-                                         /
-Security Specialist (Sonnet) ----------'
+Scout (fast) ----------> Coder (mid-tier) --> Orchestrator (frontier)
+                                           /
+Tester (mid-tier) -----------------------'
+                                           /
+A11y Specialist (mid-tier) --------------'
+                                           /
+Security Specialist (mid-tier) ----------'
 ```
 
 **Triggers**:
@@ -120,15 +120,15 @@ Security Specialist (Sonnet) ----------'
 
 ## Cost Projection
 
-| Agent               | Model  | Est. Call Volume | Relative Cost |
-| ------------------- | ------ | ---------------- | ------------- |
-| Scout               | Haiku  | ~50%             | Low           |
-| Coder               | Sonnet | ~15%             | Medium        |
-| Tester              | Sonnet | ~10%             | Medium        |
-| A11y Specialist     | Sonnet | ~8%              | Medium        |
-| Security Specialist | Sonnet | ~8%              | Medium        |
-| Orchestrator        | Opus   | ~9%              | High          |
+| Agent               | Tier     | Est. Call Volume | Relative Cost |
+| ------------------- | -------- | ---------------- | ------------- |
+| Scout               | Fast     | ~50%             | Low           |
+| Coder               | Mid-tier | ~15%             | Medium        |
+| Tester              | Mid-tier | ~10%             | Medium        |
+| A11y Specialist     | Mid-tier | ~8%              | Medium        |
+| Security Specialist | Mid-tier | ~8%              | Medium        |
+| Orchestrator        | Frontier | ~9%              | High          |
 
-**Distribution**: ~50% Haiku, ~41% Sonnet, ~9% Opus. Slightly below the 70/20/10 target for Haiku because dual-touchpoint specialists increase Sonnet volume. Justified by the project's enterprise requirements.
+**Distribution**: ~50% fast, ~41% mid-tier, ~9% frontier. Slightly below the 70/20/10 target for fast because dual-touchpoint specialists increase mid-tier volume. Justified by the project's enterprise requirements.
 
-**Cost levers**: Prompt caching reduces Opus cost (shared context). Scout's high volume at Haiku pricing keeps total cost low. Both specialists are skipped entirely for tasks that don't touch their domain (pure refactoring skips both; backend-only work skips a11y).
+**Cost levers**: Prompt caching reduces frontier cost (shared context). Scout's high volume at fast-tier pricing keeps total cost low. Both specialists are skipped entirely for tasks that don't touch their domain (pure refactoring skips both; backend-only work skips a11y).

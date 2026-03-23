@@ -14,7 +14,7 @@ Key characteristics that shape the agent team:
 
 ## Team design
 
-The team has 6 agents. The three core agents (Orchestrator, Coder, Tester) plus two dual-touchpoint specialists (Accessibility, Security) and one platform specialist (Database).
+The team has 6 agents. The three core agents (Orchestrator, Coder, Tester) plus a Scout (cheap context gathering) and two dual-touchpoint specialists (Accessibility, Security).
 
 See `team.md` for the full team specification.
 
