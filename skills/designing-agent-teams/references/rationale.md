@@ -18,13 +18,13 @@ A bunch of different multi-agent systems have independently landed on the same t
 - Anthropic's [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) describes the same thing as an evaluator-optimizer loop.
 - The ["Code in Harmony" survey](https://arxiv.org/abs/2501.01957) ranked 14 frameworks by Elo. The top three all used 3 to 4 agents with feedback loops. The bottom-ranked ones used more agents in waterfall pipelines.
 
-So the skill has a mandatory core team: Orchestrator (plan), Coder (implement), Tester (verify). Every team gets these three. Specialists go on top.
+So the skill has a mandatory core team: Lead (plan), Coder (implement), Tester (verify). Every team gets these three. Specialists go on top.
 
 ## Hierarchical coordination is not optional
 
 [Google Research](https://arxiv.org/abs/2502.14858) tested 180 agent configurations across 5 architectures. Flat topologies (no coordinator) amplified errors by 17.2×. Adding a centralized orchestrator brought that down to 4.4×.
 
-Without someone in charge, adding agents makes things worse. The skill requires an Orchestrator in every team.
+Without someone in charge, adding agents makes things worse. The skill requires a Lead in every team.
 
 ## Deterministic quality gates, not LLM self-evaluation
 
@@ -84,7 +84,7 @@ Roughly 70% fast, 20% mid-tier, 10% frontier by call volume. More of a smell tes
 
 ### Mid-tier handles 80 to 90% of coding tasks
 
-Feature building, test writing, standard refactoring. None of this needs frontier reasoning. Default to mid-tier for the Coder, Tester, and most specialists. Save frontier for the Orchestrator's planning and review work.
+Feature building, test writing, standard refactoring. None of this needs frontier reasoning. Default to mid-tier for the Coder, Tester, and most specialists. Save frontier for the Lead's planning and review work.
 
 ### Frontier models refactor beyond scope
 

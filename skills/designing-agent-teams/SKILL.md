@@ -68,7 +68,7 @@ Think of the agent team like a human dev team: a small core that's always presen
 
 **Core team (always present):**
 
-- **Orchestrator** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one.
+- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one.
 - **Coder** — the developer. Implements features and fixes within scoped boundaries.
 - **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is one of the highest-impact structural decisions in a multi-agent team.
 
@@ -95,9 +95,9 @@ Prefer cross-cutting concern specialists (security, accessibility, performance) 
 **5. Prevent write conflicts.** How strictly to scope write access depends on whether agents run in parallel or sequentially:
 
 - **Parallel agents** (e.g., Claude Code Agent Teams, tmux worktrees): assign each agent to distinct directories or modules. Two agents writing to the same file simultaneously will overwrite each other's work. Use git worktree isolation where the platform supports it.
-- **Sequential agents** (e.g., orchestrator delegates one task at a time): file conflicts are less likely since agents take turns, but still scope write access to what each agent actually needs. A tester should write to test directories, not source code. A docs agent should write to documentation files, not application logic.
+- **Sequential agents** (e.g., lead delegates one task at a time): file conflicts are less likely since agents take turns, but still scope write access to what each agent actually needs. A tester should write to test directories, not source code. A docs agent should write to documentation files, not application logic.
 
-In both cases, when a task genuinely crosses boundaries, the orchestrator should coordinate the handoff rather than giving multiple agents overlapping write access.
+In both cases, when a task genuinely crosses boundaries, the lead should coordinate the handoff rather than giving multiple agents overlapping write access.
 
 **6. Scope tools tightly.** Each agent gets only the tools it needs. A documentation agent does not need shell access. A file explorer does not need write permissions.
 
@@ -125,7 +125,7 @@ These are platform-agnostic and work with any agent that can read markdown files
 ```
 AGENTS.md                  # Team overview, orchestration, escalation map (repo root)
 .agents/
-├── orchestrator.md        # Core: always present
+├── lead.md               # Core: always present
 ├── coder.md               # Core: always present
 ├── tester.md              # Core: always present
 └── [specialist].md        # Specialists: added per project (e.g., accessibility.md, security.md)
@@ -149,7 +149,7 @@ If `AGENTS.md` already exists, read it first and update in place. In **add** mod
 
 Create `.agents/` in the project root if it does not exist.
 
-**Individual agent files** (e.g., `orchestrator.md`, `coder.md`, `tester.md`) — one file per agent. Each contains:
+**Individual agent files** (e.g., `lead.md`, `coder.md`, `tester.md`) — one file per agent. Each contains:
 
 1. **Role** — what this agent does, in one paragraph
 2. **Model** — which model tier and why
@@ -186,13 +186,13 @@ These patterns emerged from real-world use and significantly improved team effec
 
 ### Narrate delegations
 
-The orchestrator should explain each handoff to the user: which agent is being called, why, and what it returned. Without narration, multi-agent workflows are a black box — the user sees a final result but has no idea what happened in between, making it hard to debug, trust, or improve the team.
+The lead should explain each handoff to the user: which agent is being called, why, and what it returned. Without narration, multi-agent workflows are a black box — the user sees a final result but has no idea what happened in between, making it hard to debug, trust, or improve the team.
 
-Add this to the orchestrator's instructions:
+Add this to the lead's instructions:
 
 > Before each delegation, explain which agent you are calling and why. After each agent returns, summarise what it found or did.
 
-Reinforce this in any platform-specific config preamble so the orchestrator sees it at invocation time, not just in its instruction file.
+Reinforce this in any platform-specific config preamble so the lead sees it at invocation time, not just in its instruction file.
 
 ### Dual-touchpoint specialists
 
@@ -237,7 +237,7 @@ This avoids wasted specialist reviews on code that's about to change due to test
 
 When reviewing a team (any mode), check for:
 
-- **Missing core team member** — every team should have an orchestrator, coder, and independent tester; if any is missing, that's the first thing to fix
+- **Missing core team member** — every team should have a lead, coder, and independent tester; if any is missing, that's the first thing to fix
 - **Missing independent tester** — if the coder writes its own tests, the team is missing one of the highest-impact structural decisions
 - **Overlapping write access** — in parallel setups, multiple agents with write access to the same directories will cause conflicts; in sequential setups, check that each agent's write scope matches its actual role
 - **LLM-only quality gates** — if the only check before merge is another LLM reviewing, add deterministic gates (tests, linting, type-checks)

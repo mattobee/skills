@@ -10,14 +10,14 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 
 ## Agent Roster
 
-### 1. Orchestrator (frontier)
+### 1. Lead (frontier)
 
 - **Model**: Frontier
 - **Rationale**: Task decomposition across 80 source files, real-time collaboration features, and multiple domain layers. Top-tier reasoning for cross-cutting architectural decisions.
 - **Tools**: read, search (read-only), git commands
 - **Scope**: Task planning, architectural decisions, review, escalation target
 - **Escalation**: Terminal
-- **Instructions**: `.agents/orchestrator.md`
+- **Instructions**: `.agents/lead.md`
 
 ### 2. Coder (mid-tier)
 
@@ -25,7 +25,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 - **Rationale**: Bulk implementation at the best quality/speed/cost balance. Handles React components, API routes, WebSocket handlers, and Tailwind styling.
 - **Tools**: read, write, shell, search
 - **Scope**: `src/` (excluding test files and Prisma schema)
-- **Escalation**: Orchestrator for multi-system complexity or architectural ambiguity
+- **Escalation**: Lead for multi-system complexity or architectural ambiguity
 - **Instructions**: `.agents/coder.md`
 
 ### 3. Tester (mid-tier)
@@ -34,7 +34,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 - **Rationale**: Independent test authorship avoids confirmation bias. Writes tests from the spec, not from the implementation.
 - **Tools**: read, write (test files only), shell (test runners only)
 - **Scope**: `src/**/*.test.ts(x)`, `e2e/**/*.spec.ts`, `e2e/fixtures/`, `e2e/helpers/`
-- **Escalation**: Orchestrator when spec is ambiguous or test failures reveal architectural issues
+- **Escalation**: Lead when spec is ambiguous or test failures reveal architectural issues
 - **Instructions**: `.agents/tester.md`
 
 ### 4. Scout (fast)
@@ -43,7 +43,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 - **Rationale**: Fastest and cheapest for file exploration. 80 files is well within a fast model's context window.
 - **Tools**: read, search (read-only)
 - **Scope**: File discovery, pattern searching, dependency tracing, context gathering
-- **Escalation**: Coder (implementation context) or Orchestrator (scope unclear)
+- **Escalation**: Coder (implementation context) or Lead (scope unclear)
 - **Instructions**: `.agents/scout.md`
 
 ### 5. Accessibility Specialist (mid-tier)
@@ -52,7 +52,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 - **Rationale**: Enterprise clients require WCAG AA compliance. Called at two points: early (risk assessment before implementation) and late (code review after implementation).
 - **Tools**: read, search, shell (`npm run test:a11y` only)
 - **Scope**: Assesses plans for a11y risks; reviews all UI changes; does not write code
-- **Escalation**: Orchestrator for architectural a11y decisions
+- **Escalation**: Lead for architectural a11y decisions
 - **Instructions**: `.agents/accessibility.md`
 
 ### 6. Security Specialist (mid-tier)
@@ -61,7 +61,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 - **Rationale**: Multi-tenant RBAC, API keys, team invitations — security review is a cross-cutting concern. Called at two points: early (threat assessment before implementation) and late (code review after implementation).
 - **Tools**: read, search, shell (`npm audit` only)
 - **Scope**: Assesses plans for security risks; reviews auth flows, input validation, RBAC policies; does not write code
-- **Escalation**: Orchestrator for security architecture decisions
+- **Escalation**: Lead for security architecture decisions
 - **Instructions**: `.agents/security.md`
 
 ## Orchestration Pattern
@@ -70,7 +70,7 @@ The project has 5 separable concerns with independent file boundaries: frontend 
 User Request
     |
     v
-Orchestrator (frontier)
+Lead (frontier)
     |
     +-- 1. @scout -> gather context, find affected files
     |
@@ -86,21 +86,21 @@ Orchestrator (frontier)
     |
     +-- 7. @security -> post-implementation review (auth/data tasks only)
     |
-    +-- 8. Orchestrator reviews and synthesises
+    +-- 8. Lead reviews and synthesises
 ```
 
-**Flow**: Scout first (cheap context), then specialists for early risk/threat assessment on relevant tasks, then Coder (with specialist recommendations), then Tester, then specialists again as quality gates. Orchestrator bookends the workflow.
+**Flow**: Scout first (cheap context), then specialists for early risk/threat assessment on relevant tasks, then Coder (with specialist recommendations), then Tester, then specialists again as quality gates. Lead bookends the workflow.
 
 **Parallel paths**: Scout runs first alone. Early a11y and security assessments can run in parallel (independent concerns). Coder -> Tester -> late reviews are sequential. Late a11y and security reviews can run in parallel.
 
 **Quality gates are deterministic**: `npm run typecheck`, `npm run lint`, `npm run test`, `npm run build`. Specialist reviews add value for nuanced issues but are not the primary gate.
 
-**Narration**: The Orchestrator explains each delegation before and after calling an agent. This is critical for user visibility into the multi-agent workflow.
+**Narration**: The Lead explains each delegation before and after calling an agent. This is critical for user visibility into the multi-agent workflow.
 
 ## Escalation Map
 
 ```
-Scout (fast) ----------> Coder (mid-tier) --> Orchestrator (frontier)
+Scout (fast) ----------> Coder (mid-tier) --> Lead (frontier)
                                            /
 Tester (mid-tier) -----------------------'
                                            /
@@ -112,11 +112,11 @@ Security Specialist (mid-tier) ----------'
 **Triggers**:
 
 - Scout -> Coder: needs implementation context to understand a pattern
-- Scout -> Orchestrator: scope of search unclear, needs task decomposition
-- Coder -> Orchestrator: multi-system change, architectural ambiguity, >3 files affected unexpectedly
-- Tester -> Orchestrator: spec is ambiguous, test failures reveal architectural issues
-- A11y Specialist -> Orchestrator: accessibility fix requires architectural redesign
-- Security Specialist -> Orchestrator: security fix requires architectural redesign
+- Scout -> Lead: scope of search unclear, needs task decomposition
+- Coder -> Lead: multi-system change, architectural ambiguity, >3 files affected unexpectedly
+- Tester -> Lead: spec is ambiguous, test failures reveal architectural issues
+- A11y Specialist -> Lead: accessibility fix requires architectural redesign
+- Security Specialist -> Lead: security fix requires architectural redesign
 
 ## Cost Projection
 
@@ -127,7 +127,7 @@ Security Specialist (mid-tier) ----------'
 | Tester              | Mid-tier | ~10%             | Medium        |
 | A11y Specialist     | Mid-tier | ~8%              | Medium        |
 | Security Specialist | Mid-tier | ~8%              | Medium        |
-| Orchestrator        | Frontier | ~9%              | High          |
+| Lead                | Frontier | ~9%              | High          |
 
 **Distribution**: ~50% fast, ~41% mid-tier, ~9% frontier. Slightly below the 70/20/10 target for fast because dual-touchpoint specialists increase mid-tier volume. Justified by the project's enterprise requirements.
 

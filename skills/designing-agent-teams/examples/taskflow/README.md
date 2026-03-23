@@ -14,7 +14,7 @@ Key characteristics that shape the agent team:
 
 ## Team design
 
-The team has 6 agents. The three core agents (Orchestrator, Coder, Tester) plus a Scout (cheap context gathering) and two dual-touchpoint specialists (Accessibility, Security).
+The team has 6 agents. The three core agents (Lead, Coder, Tester) plus a Scout (cheap context gathering) and two dual-touchpoint specialists (Accessibility, Security).
 
 See `team.md` for the full team specification.
 
@@ -22,7 +22,7 @@ See `team.md` for the full team specification.
 
 ### Narration
 
-The Orchestrator explains each delegation before and after. This gives the developer visibility into the workflow without needing to inspect logs or databases.
+The Lead explains each delegation before and after. This gives the developer visibility into the workflow without needing to inspect logs or databases.
 
 ### Dual-touchpoint specialists
 
@@ -43,4 +43,4 @@ This ordering avoids wasted reviews on code that might change due to test failur
 
 ### Escalation
 
-All specialists escalate to the Orchestrator. The Scout escalates to the Coder (for implementation context) or Orchestrator (for scope clarity). Escalation triggers are concrete: "test failures after an attempt", "change affects >3 files unexpectedly", "spec is ambiguous".
+All specialists escalate to the Lead. The Scout escalates to the Coder (for implementation context) or Lead (for scope clarity). Escalation triggers are concrete: "test failures after an attempt", "change affects >3 files unexpectedly", "spec is ambiguous".

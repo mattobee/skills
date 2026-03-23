@@ -22,7 +22,7 @@ Models and naming change frequently. Check your provider's current model lineup 
 
 ## The 70/20/10 rule
 
-Target call distribution by volume: ~70% fast, ~20% mid-tier, ~10% frontier. The orchestrator runs roughly 10 times per workflow while workers run 100+ times — volume differences make per-call cost compound fast.
+Target call distribution by volume: ~70% fast, ~20% mid-tier, ~10% frontier. The lead runs roughly 10 times per workflow while workers run 100+ times — volume differences make per-call cost compound fast.
 
 Red flags in a team's distribution:
 
@@ -39,4 +39,4 @@ Build concrete escalation triggers, not vague "if it's hard" rules. Effective tr
 - **Prompt caching** — shared context replayed across agent calls gets cached automatically; the savings are large
 - **Effort control** — some providers support adaptive effort levels; at reduced effort, frontier models deliver strong results with far fewer output tokens
 - **Batch API** — significant discount for non-time-critical work (doc generation, test expansion, analysis)
-- **Context isolation** — each subagent gets its own context window and returns only a summary, preventing context bloat in the orchestrator
+- **Context isolation** — each subagent gets its own context window and returns only a summary, preventing context bloat in the lead
