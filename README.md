@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for coding agents. Built on the [Agent Skills](https://agentskills.io) open specification, it's platform-agnostic by design and works with any agent that supports the spec.
+Reusable skills for coding agents. I use these across my projects and you can too. Built on the [Agent Skills](https://agentskills.io) open specification, so they work with any agent that supports the spec.
 
 ## Available Skills
 
