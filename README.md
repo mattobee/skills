@@ -25,6 +25,21 @@ Example prompts:
 - "Add a security specialist to my existing agent team"
 - "Which model tier should I use for my tester agent?"
 
+### suggesting-next-steps
+
+Suggests prioritised next steps for a project based on git history, GitHub issues/PRs, tracking files, and project docs.
+
+```bash
+npx skills add mattobee/skills --skill suggesting-next-steps
+```
+
+Example prompts:
+
+- "What should I work on next?"
+- "I haven't touched this project in a week — what's the state of things?"
+- "What's left to do on this feature?"
+- "Help me prioritise my backlog"
+
 ## Install all skills
 
 ```bash
