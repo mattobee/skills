@@ -170,6 +170,7 @@ When generating platform-specific configs:
 - **Consult the platform's own documentation** for current config syntax, file format, and available fields. Do not rely on memorised config formats — platforms change their agent configuration frequently.
 - Each platform config file should be a thin wrapper that references the agent's `.agents/*.md` instruction file for the full role description. Do not duplicate instructions across files.
 - Use the model ID format appropriate for the user's provider (see `references/model-guide.md` for the tier mapping).
+- **Always create the Lead as a new, named agent** — do not override or modify the platform's default/built-in agent. The Lead must be a distinct, separately selectable agent so the user can still access the platform's default agent alongside the team.
 
 If the platform already has agent config files, read them first and merge new agents. Preserve existing agents not being replaced.
 
@@ -182,7 +183,7 @@ If the platform already has agent config files, read them first and merge new ag
 
 ## Best practices
 
-These patterns emerged from real-world use and significantly improved team effectiveness. They are recommendations, not requirements — adapt them to your project's needs. See `examples/taskflow/` for a worked example demonstrating all of these.
+These patterns emerged from real-world use and significantly improved team effectiveness. They are recommendations, not requirements — adapt them to your project's needs.
 
 ### Narrate delegations
 
@@ -232,6 +233,7 @@ This avoids wasted specialist reviews on code that's about to change due to test
 - When merging into an existing project-level config file (e.g., `CLAUDE.md`), it may contain project-specific instructions unrelated to agents. Only touch the agent team section. Rewriting the whole file will destroy existing project configuration.
 - When adding an agent in **add** mode, create a new `.agents/[name].md` file and a corresponding platform config file. Do not rewrite existing agent files.
 - Different platforms handle subagent invocation differently. Consult the platform's documentation for current config syntax rather than assuming one platform's patterns work on another.
+- Do not override a platform's default/built-in agent when creating the Lead. The Lead must be a new, separately selectable agent. Overriding the default removes the user's access to it and conflates two different roles.
 
 ## Review checklist
 
