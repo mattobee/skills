@@ -222,6 +222,27 @@ When multiple quality-gate agents run after implementation, order them by depend
 
 This avoids wasted specialist reviews on code that's about to change due to test failures.
 
+### Evaluator feedback loops
+
+For tasks with subjective quality dimensions (visual design, UX, content tone) or complex integration surfaces, a single pass/fail gate is often insufficient. A separate evaluator agent that grades the generator's output against explicit criteria and sends structured feedback can drive meaningful quality improvement through iteration.
+
+This works when:
+
+- The evaluator is a separate agent, not self-evaluation by the generator — agents confidently praise their own mediocre work, and tuning a standalone evaluator to be skeptical is far more tractable than making a generator self-critical
+- Grading criteria are concrete and weighted (not "is this good?" but "does this follow these specific principles?"), with priorities that push the generator away from safe defaults
+- The evaluator is calibrated with few-shot examples showing expected scores for representative outputs
+- The evaluator uses tools to interact with the output (e.g., Playwright for UI, API calls for backends) rather than just reading code
+
+Deterministic quality gates (tests, linting, type-checks) remain the primary gate. Evaluator loops are a secondary mechanism for quality dimensions that automated tools cannot measure. Running 3–5 evaluator iterations typically yields diminishing returns; budget accordingly.
+
+### Work contracts
+
+Before a generator agent begins a chunk of work, have it negotiate a work contract with the evaluator: what will be built, and what criteria define "done." The generator proposes scope and acceptance criteria, the evaluator reviews and pushes back, and both agree before implementation starts.
+
+This bridges the gap between a high-level plan and testable implementation. The evaluator knows exactly what to test, and the generator knows what standard it will be held to. Without a contract, the evaluator grades against implicit expectations that may not match what the generator intended to build.
+
+Add work contracts when the Lead's output is intentionally high-level (as recommended) and the gap between spec and testable implementation is wide enough that misalignment is likely.
+
 ## Gotchas
 
 - A coder agent that writes its own tests has confirmation bias — it tests what it thinks it implemented, not what it should have. An independent tester agent that generates tests from the spec, not from the code, catches significantly more edge cases.
