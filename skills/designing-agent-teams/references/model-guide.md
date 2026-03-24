@@ -20,6 +20,8 @@ This skill uses a three-tier model framework. Match cognitive demand to model ti
 
 Models and naming change frequently. Check your provider's current model lineup when configuring agents. The tier assignments above are approximate — evaluate based on capability benchmarks, context window size, and cost for your use case.
 
+When writing model IDs in config files, use the provider's canonical stable name (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that will go stale. Canonical names automatically resolve to the latest version. Check the provider's documentation for current canonical IDs — do not guess the format.
+
 ## The 70/20/10 rule
 
 Target call distribution by volume: ~70% fast, ~20% mid-tier, ~10% frontier. The lead runs roughly 10 times per workflow while workers run 100+ times — volume differences make per-call cost compound fast.

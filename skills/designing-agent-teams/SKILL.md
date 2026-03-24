@@ -171,7 +171,7 @@ When generating platform-specific configs:
 
 - **Consult the platform's own documentation** for current config syntax, file format, and available fields. Do not rely on memorised config formats — platforms change their agent configuration frequently.
 - Each platform config file should be a thin wrapper that references the agent's `.agents/*.md` instruction file for the full role description. Do not duplicate instructions across files.
-- Use the model ID format appropriate for the user's provider (see `references/model-guide.md` for the tier mapping).
+- Use the model ID format appropriate for the user's provider (see `references/model-guide.md` for the tier mapping). Always use canonical stable names, not dated snapshot IDs — check the provider's documentation for current canonical IDs.
 - **Always create the Lead as a new, named agent** — do not override or modify the platform's default/built-in agent. The Lead must be a distinct, separately selectable agent so the user can still access the platform's default agent alongside the team.
 
 If the platform already has agent config files, read them first and merge new agents. Preserve existing agents not being replaced.
@@ -235,6 +235,7 @@ This avoids wasted specialist reviews on code that's about to change due to test
 - When adding an agent in **add** mode, create a new `.agents/[name].md` file and a corresponding platform config file. Do not rewrite existing agent files.
 - Different platforms handle subagent invocation differently. Consult the platform's documentation for current config syntax rather than assuming one platform's patterns work on another.
 - Do not override a platform's default/built-in agent when creating the Lead. The Lead must be a new, separately selectable agent. Overriding the default removes the user's access to it and conflates two different roles.
+- Use canonical stable model names in config files (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that goes stale. Check the provider's docs for current canonical IDs rather than guessing the format.
 
 ## Review checklist
 
