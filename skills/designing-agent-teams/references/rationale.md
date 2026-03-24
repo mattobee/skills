@@ -96,15 +96,15 @@ Call domain specialists early (planning) and late (review) rather than just once
 
 ## Generator-evaluator separation
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when the quality is obviously poor to a human. Tuning a standalone evaluator to be skeptical turned out to be far more tractable than making a generator critical of its own output. For frontend design, they had the evaluator use Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), calibrated with few-shot examples. Quality improved across 5–15 iteration cycles.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when the quality is obviously poor to a human. Tuning a standalone evaluator to be skeptical turned out to be far more tractable than making the builder critical of its own output. For frontend design, they had the evaluator use Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), calibrated with few-shot examples. Quality improved across 5–15 iteration cycles.
 
-This is the independent Tester principle extended beyond functional correctness into subjective quality. Same mechanism — separate the judge from the maker — but grading criteria and tool-based interaction instead of test suites. The skill now includes an "Evaluator feedback loops" best practice for this.
+This is the independent Tester principle extended beyond functional correctness into subjective quality. Same mechanism — separate the judge from the maker — but grading criteria and tool-based interaction instead of test suites. The skill doesn't add new "generator" and "evaluator" roles; the Coder already generates, and the Tester and specialists already evaluate. The "Evaluator feedback loops" best practice describes how to give those existing roles an iterative feedback cycle.
 
 ## Work contracts between agents
 
-The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the generator proposes what it'll build and how success will be verified, and the evaluator pushes back until they agree on a "definition of done." In one example, a single sprint had 27 testable criteria.
+The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the builder proposes what it'll build and how success will be verified, and the evaluating agent pushes back until they agree on a "definition of done." In one example, a single sprint had 27 testable criteria.
 
-Without a contract, the evaluator grades against implicit expectations that may not match what the generator intended. The skill now recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
+Without a contract, the Tester grades against implicit expectations that may not match what the Coder intended. The skill now recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
 
 ## Context resets vs. compaction
 
@@ -112,6 +112,6 @@ The same post found that context resets (clean slate with a handoff artifact) be
 
 ## Scaffolding tracks model capability
 
-A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do on its own. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The evaluator's value shifted from catching basic coherence failures to catching last-mile bugs as the generator got better.
+A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do on its own. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The Tester's value shifted from catching basic coherence failures to catching last-mile bugs as the Coder's model got better.
 
 The skill's review checklist now asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity that isn't earning its keep should go.

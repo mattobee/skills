@@ -224,22 +224,22 @@ This avoids wasted specialist reviews on code that's about to change due to test
 
 ### Evaluator feedback loops
 
-For tasks with subjective quality dimensions (visual design, UX, content tone) or complex integration surfaces, a single pass/fail gate is often insufficient. A separate evaluator agent that grades the generator's output against explicit criteria and sends structured feedback can drive meaningful quality improvement through iteration.
+For tasks with subjective quality dimensions (visual design, UX, content tone) or complex integration surfaces, a single pass/fail gate is often insufficient. The Tester or a specialist can grade the Coder's output against explicit criteria and send structured feedback for iterative refinement, rather than just passing or failing a test suite.
 
 This works when:
 
-- The evaluator is a separate agent, not self-evaluation by the generator — agents confidently praise their own mediocre work, and tuning a standalone evaluator to be skeptical is far more tractable than making a generator self-critical
-- Grading criteria are concrete and weighted (not "is this good?" but "does this follow these specific principles?"), with priorities that push the generator away from safe defaults
-- The evaluator is calibrated with few-shot examples showing expected scores for representative outputs
-- The evaluator uses tools to interact with the output (e.g., Playwright for UI, API calls for backends) rather than just reading code
+- The evaluating agent is separate from the one that did the work — agents confidently praise their own mediocre output, and tuning a Tester or specialist to be skeptical is far more tractable than making the Coder self-critical
+- Grading criteria are concrete and weighted (not "is this good?" but "does this follow these specific principles?"), with priorities that push the Coder away from safe defaults
+- The evaluating agent is calibrated with few-shot examples showing expected scores for representative outputs
+- The evaluating agent uses tools to interact with the output (e.g., Playwright for UI, API calls for backends) rather than just reading code
 
-Deterministic quality gates (tests, linting, type-checks) remain the primary gate. Evaluator loops are a secondary mechanism for quality dimensions that automated tools cannot measure. Running 3–5 evaluator iterations typically yields diminishing returns; budget accordingly.
+Deterministic quality gates (tests, linting, type-checks) remain the primary gate. Evaluator loops are a secondary mechanism for quality dimensions that automated tools cannot measure. Running 3–5 iterations typically yields diminishing returns; budget accordingly.
 
 ### Work contracts
 
-Before a generator agent begins a chunk of work, have it negotiate a work contract with the evaluator: what will be built, and what criteria define "done." The generator proposes scope and acceptance criteria, the evaluator reviews and pushes back, and both agree before implementation starts.
+Before the Coder begins a chunk of work, have it negotiate a work contract with the Tester (or whichever agent will evaluate the result): what will be built, and what criteria define "done." The Coder proposes scope and acceptance criteria, the evaluating agent reviews and pushes back, and both agree before implementation starts.
 
-This bridges the gap between a high-level plan and testable implementation. The evaluator knows exactly what to test, and the generator knows what standard it will be held to. Without a contract, the evaluator grades against implicit expectations that may not match what the generator intended to build.
+This bridges the gap between a high-level plan and testable implementation. The Tester knows exactly what to test, and the Coder knows what standard it will be held to. Without a contract, the evaluating agent grades against implicit expectations that may not match what the Coder intended to build.
 
 Add work contracts when the Lead's output is intentionally high-level (as recommended) and the gap between spec and testable implementation is wide enough that misalignment is likely.
 
