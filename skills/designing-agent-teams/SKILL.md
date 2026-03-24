@@ -68,7 +68,7 @@ Think of the agent team like a human dev team: a small core that's always presen
 
 **Core team (always present):**
 
-- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one.
+- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one. Plans should stay at the product and architectural level — specifying deliverables, user stories, and high-level technical direction rather than granular implementation details. Errors in over-specified plans cascade into downstream implementation.
 - **Coder** — the developer. Implements features and fixes within scoped boundaries.
 - **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is one of the highest-impact structural decisions in a multi-agent team.
 
