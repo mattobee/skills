@@ -10,22 +10,9 @@ You can install all skills in one go with:
 npx skills add mattobee/skills
 ```
 
-### designing-agent-teams
+### Accessibility
 
-Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces team reasoning documents and agent instruction files that work across platforms.
-
-```bash
-npx skills add mattobee/skills --skill designing-agent-teams
-```
-
-Example prompts:
-
-- "Design an agent team for this codebase"
-- "Review my agent team configuration and suggest improvements"
-- "Add a security specialist to my existing agent team"
-- "Which model tier should I use for my tester agent?"
-
-### reviewing-accessibility
+#### reviewing-accessibility
 
 Reviews implemented UI code for WCAG Level AA compliance. Covers semantic HTML, keyboard navigation, focus management, ARIA, labels, visual contrast, and forms. For pre-implementation risk assessment, use `predicting-accessibility-risks` instead.
 
@@ -40,7 +27,7 @@ Example prompts:
 - "Is my form handling accessible?"
 - "Check whether this dialog meets accessibility requirements"
 
-### writing-accessibility-tests
+#### writing-accessibility-tests
 
 Writes Playwright accessibility tests using a two-layer strategy: axe-core scans for broad automated coverage, plus targeted Playwright assertions for things axe cannot catch (accessible names, ARIA states, focus management, shadow DOM, multi-theme contrast).
 
@@ -55,7 +42,7 @@ Example prompts:
 - "What accessibility test coverage am I missing?"
 - "How do I test accessible names on web components with shadow DOM?"
 
-### predicting-accessibility-risks
+#### predicting-accessibility-risks
 
 Identifies accessibility risks in proposed features, designs, or technical plans before implementation begins. Produces a risk assessment with affected user groups, WCAG criteria, likelihood, cost to fix later, and specific mitigations.
 
@@ -70,7 +57,7 @@ Example prompts:
 - "What could go wrong for disabled users with this approach?"
 - "Is there anything about this plan that will be expensive to fix for accessibility later?"
 
-### estimating-accessibility-effort
+#### estimating-accessibility-effort
 
 Estimates the effort required to remediate accessibility issues. Takes audit findings, axe-core results, or backlog items and produces T-shirt-sized effort estimates with rationale, dependencies, and quick wins.
 
@@ -85,7 +72,7 @@ Example prompts:
 - "Which of these accessibility fixes are quick wins?"
 - "What dependencies exist between these accessibility issues?"
 
-### prioritising-accessibility-fixes
+#### prioritising-accessibility-fixes
 
 Prioritises a set of accessibility issues for remediation based on severity, user impact, and effort. Produces a scored, tiered remediation plan with batching recommendations and a concrete fix order.
 
@@ -100,7 +87,24 @@ Example prompts:
 - "Triage this accessibility backlog"
 - "Which accessibility fixes give the most value for the least effort?"
 
-### suggesting-next-steps
+### General
+
+#### designing-agent-teams
+
+Designs, generates, and refines multi-agent coding teams with optimal model-to-role assignments. Produces team reasoning documents and agent instruction files that work across platforms.
+
+```bash
+npx skills add mattobee/skills --skill designing-agent-teams
+```
+
+Example prompts:
+
+- "Design an agent team for this codebase"
+- "Review my agent team configuration and suggest improvements"
+- "Add a security specialist to my existing agent team"
+- "Which model tier should I use for my tester agent?"
+
+#### suggesting-next-steps
 
 Suggests prioritised next steps for a project based on git history, GitHub issues/PRs, tracking files, and project docs.
 
