@@ -87,6 +87,21 @@ Example prompts:
 - "Triage this accessibility backlog"
 - "Which accessibility fixes give the most value for the least effort?"
 
+#### fixing-accessibility-issues
+
+Fixes accessibility issues in implemented UI code. Takes findings from audits, axe-core scans, or `reviewing-accessibility` and produces code changes, with pattern selection defaults for accessible names, focus management, ARIA, forms, contrast, headings, keyboard interaction, and live regions.
+
+```bash
+npx skills add mattobee/skills --skill fixing-accessibility-issues
+```
+
+Example prompts:
+
+- "Fix these accessibility issues"
+- "Remediate the findings from the audit"
+- "How should I fix this axe-core violation?"
+- "Implement an accessible modal pattern for this dialog"
+
 ### General
 
 #### designing-agent-teams
