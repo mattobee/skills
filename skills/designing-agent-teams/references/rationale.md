@@ -96,20 +96,22 @@ Call domain specialists early (planning) and late (review) rather than just once
 
 ## Generator-evaluator separation
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when quality is obviously poor to a human observer. Separating generation from evaluation and tuning the evaluator to be skeptical was far more tractable than making the generator self-critical. For frontend design, the evaluator used Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), with few-shot calibration to anchor scores. Quality improved measurably across 5–15 iteration cycles.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when the quality is obviously poor to a human. Tuning a standalone evaluator to be skeptical turned out to be far more tractable than making a generator critical of its own output. For frontend design, they had the evaluator use Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), calibrated with few-shot examples. Quality improved across 5–15 iteration cycles.
 
-This extends the skill's independent Tester principle beyond functional correctness to subjective quality dimensions. The mechanism is the same — separate the judge from the maker — but the evaluation method differs: grading criteria and tool-based interaction instead of test suites.
+This is the independent Tester principle extended beyond functional correctness into subjective quality. Same mechanism — separate the judge from the maker — but grading criteria and tool-based interaction instead of test suites. The skill now includes an "Evaluator feedback loops" best practice for this.
 
 ## Work contracts between agents
 
-The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the generator proposes what it will build and how success will be verified, and the evaluator reviews the proposal. They iterate until they agree on a "definition of done" before any code is written. In one example, a single sprint had 27 testable criteria.
+The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the generator proposes what it'll build and how success will be verified, and the evaluator pushes back until they agree on a "definition of done." In one example, a single sprint had 27 testable criteria.
 
-This reduced misalignment between what the generator intended and what the evaluator expected, without requiring the planner to specify granular implementation details upfront.
+Without a contract, the evaluator grades against implicit expectations that may not match what the generator intended. The skill now recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
 
 ## Context resets vs. compaction
 
-The same post found that context resets (clean slate with handoff artifact) outperformed compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — premature wrap-up as context filled. Opus 4.5 and 4.6 reduced this behaviour enough to drop resets in favour of continuous sessions with compaction. The lesson: context management strategy should track the specific model's behaviour, not be a fixed architectural decision.
+The same post found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — it started wrapping up work prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets entirely. The takeaway: context management strategy should track the specific model's behaviour, not be a fixed architectural decision. The gotchas section now warns about this.
 
 ## Scaffolding tracks model capability
 
-A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The evaluator's value shifted from catching basic coherence failures to catching last-mile bugs as the generator improved. Regularly re-examine which parts of the team design are still load-bearing.
+A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do on its own. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The evaluator's value shifted from catching basic coherence failures to catching last-mile bugs as the generator got better.
+
+The skill's review checklist now asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity that isn't earning its keep should go.
