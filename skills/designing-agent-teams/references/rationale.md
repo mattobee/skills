@@ -93,3 +93,23 @@ Not formally studied, but widely observed. Give a frontier model a focused task 
 ### Dual-touchpoint specialists
 
 Call domain specialists early (planning) and late (review) rather than just once at the end. Early assessment shapes the implementation instead of just judging it afterwards. The skill recommends this for concerns that are expensive to retrofit, like accessibility and security. Not every specialist needs both touchpoints. A documentation writer only needs a late pass.
+
+## Generator-evaluator separation
+
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when quality is obviously poor to a human observer. Separating generation from evaluation and tuning the evaluator to be skeptical was far more tractable than making the generator self-critical. For frontend design, the evaluator used Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), with few-shot calibration to anchor scores. Quality improved measurably across 5–15 iteration cycles.
+
+This extends the skill's independent Tester principle beyond functional correctness to subjective quality dimensions. The mechanism is the same — separate the judge from the maker — but the evaluation method differs: grading criteria and tool-based interaction instead of test suites.
+
+## Work contracts between agents
+
+The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the generator proposes what it will build and how success will be verified, and the evaluator reviews the proposal. They iterate until they agree on a "definition of done" before any code is written. In one example, a single sprint had 27 testable criteria.
+
+This reduced misalignment between what the generator intended and what the evaluator expected, without requiring the planner to specify granular implementation details upfront.
+
+## Context resets vs. compaction
+
+The same post found that context resets (clean slate with handoff artifact) outperformed compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — premature wrap-up as context filled. Opus 4.5 and 4.6 reduced this behaviour enough to drop resets in favour of continuous sessions with compaction. The lesson: context management strategy should track the specific model's behaviour, not be a fixed architectural decision.
+
+## Scaffolding tracks model capability
+
+A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The evaluator's value shifted from catching basic coherence failures to catching last-mile bugs as the generator improved. Regularly re-examine which parts of the team design are still load-bearing.
