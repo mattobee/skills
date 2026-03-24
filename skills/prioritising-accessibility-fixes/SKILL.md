@@ -8,7 +8,7 @@ compatibility: Works best when issues already have effort estimates (from estima
 
 Given a set of accessibility issues, produce a prioritised remediation order based on severity, user impact, and effort. The output is a ranked list that helps decide what to fix first, what to batch together, and what can wait.
 
-This skill works on a set of known issues. It does not find new issues (use `reviewing-accessibility` for that) and it does not estimate effort from scratch (use `estimating-accessibility-effort` for that, or provide estimates as input). If issues arrive without effort estimates, assess effort by reading the affected code before prioritising.
+This skill works on a set of known issues. It does not find new issues (use `reviewing-accessibility` for that), estimate effort from scratch (use `estimating-accessibility-effort` for that, or provide estimates as input), or implement fixes (use `fixing-accessibility-issues` for that). If issues arrive without effort estimates, assess effort by reading the affected code before prioritising.
 
 ## Inputs
 
