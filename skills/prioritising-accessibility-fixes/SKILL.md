@@ -25,7 +25,9 @@ If effort estimates are missing, read the affected code and estimate before prio
 
 ### Effort sizes
 
-If issues arrive without effort estimates and `estimating-accessibility-effort` is not available, use this scale:
+If the project defines its own effort estimation convention (e.g. story points, T-shirt sizes with different definitions, time-based estimates), use that convention for display and map it to the Low / Medium / High effort scoring bands in the scoring model. For example, if the project uses story points, treat 1–2 points as Low effort (score 3), 3–5 as Medium (score 2), and 8+ as High (score 1) — adjusting the boundaries to match the project's scale definitions.
+
+If issues arrive without effort estimates and `estimating-accessibility-effort` is not available, use this fallback scale:
 
 | Size | Typical scope |
 |------|--------------|
@@ -189,6 +191,8 @@ After scoring all issues and assigning tiers, run a quick validation pass:
 ```
 
 Omit empty tiers. Omit the Reach column and the reach summary line if reach was not assessed.
+
+If the project defines its own priority labels (e.g. P0–P3, Critical/High/Medium/Low), add a brief mapping note at the top of the report — for example: "This project uses P0–P3. Tier 1 corresponds roughly to P0/P1, Tier 2 to P2, Tier 3 to P3." Do not replace the tier structure with the project's scale; the tiers reflect accessibility-specific scoring that a general priority scale does not capture. The mapping note bridges the two systems so the team can see where accessibility priorities sit within their existing workflow.
 
 ## Gotchas
 
