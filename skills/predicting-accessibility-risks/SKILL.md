@@ -38,6 +38,44 @@ Focus on risks that meet at least one of these criteria:
 
 Do not list every conceivable WCAG criterion. A risk assessment that lists 30 items is not actionable. Aim for the 5-10 risks that matter most for this specific change.
 
+## Involve disabled people
+
+Technical risk prediction covers part of the picture. Automated tools and AI-based analysis can assess at most 30% of WCAG success criteria, and none of them fully. The risks identified by this skill are indicators that narrow the scope for human evaluation — they are not definitive accessibility assessments.
+
+### Why
+
+"Nothing about us without us" applies directly to software development. Interfaces can pass every automated check yet fail the people who use them. The gap between technical conformance and actual usability can only be closed by involving disabled people.
+
+### When
+
+Involve disabled people at each phase — the earlier it happens, the cheaper it is to act on findings:
+
+- **Discovery and planning** (where this skill operates) — contextual inquiry and interviews with disabled users to understand existing barriers and priorities.
+- **Prototyping** — co-design sessions and proxy testing with assistive technology users before committing to an implementation approach.
+- **Implementation** — AT-specific usability testing against builds, not just automated checks against code.
+- **Post-launch** — ongoing monitoring and feedback channels that disabled users can actually reach.
+
+### How
+
+Practical options for recruiting disabled participants:
+
+- **Panel services** — [Fable](https://makeitfable.com/), [Access Works](https://knowbility.org/programs/accessworks) (Knowbility), and [AbilityNet](https://abilitynet.org.uk/) provide pre-qualified participants with documented assistive technology configurations.
+- **Disability organisations and charities** — local and national organisations can connect teams with potential participants.
+- **Internal staff disability networks** — often the fastest route to early feedback, though not a substitute for external research.
+
+Recruit based on assistive technology configuration, not diagnosis. What matters is how someone interacts with software (screen reader, switch access, voice control, magnification) rather than their medical history. The NHS benchmark of including 1 person with access needs in every 5 research participants is a reasonable starting point.
+
+### What this skill cannot assess
+
+The following require human judgment and cannot be evaluated by technical analysis alone:
+
+- Whether alt text is meaningful in context (not just present)
+- Whether screen reader announcements make functional sense in sequence
+- Whether keyboard navigation flow supports real task completion
+- Whether cognitive load is manageable for the target audience
+- How users recover from errors in practice
+- Whether multi-step workflows are actually usable versus merely conformant
+
 ## Risk patterns by feature type
 
 These are common risk areas, not exhaustive checklists. Use them as prompts to identify risks specific to the proposed change.
@@ -125,6 +163,12 @@ These are common risk areas, not exhaustive checklists. Use them as prompts to i
 |------|---------------|------|------------|----------|------------|
 | ... | ... | ... | ... | ... | ... |
 
+### User research recommendations
+
+- Which risks would benefit most from validation with disabled users
+- What disability groups and AT configurations to prioritise in testing based on the risks identified
+- At what development phase testing would be most valuable for each risk
+
 ### Recommendations
 
 [Ordered list of the most important mitigations to implement, distilled from the table above. These should be concrete enough that a developer can act on them without further research.]
@@ -141,9 +185,15 @@ Omit empty risk levels. If there are no high risks, do not include an empty High
 - **"We'll add accessibility later" is itself the highest risk.** If the plan defers accessibility to a future sprint, flag this explicitly. Retrofitting accessibility onto a finished feature is consistently and often significantly more expensive than building it in from the start.
 - **Consider the full range of disabilities.** Accessibility reviews disproportionately focus on screen reader users. Keyboard-only users, users with low vision (who may not use screen readers), users with cognitive disabilities, and users with motor impairments all have distinct needs. Name the affected group explicitly.
 - **Custom components carry more risk than standard HTML.** A `<button>` has built-in keyboard handling, focus management, and role. A `<div onClick>` has none of these. The more custom the implementation, the higher the risk.
+- **This risk assessment is not a substitute for involving disabled people.** It identifies technical patterns likely to cause barriers, but it cannot evaluate whether an interface is actually usable by people with disabilities. Plan user research with disabled participants — the risks flagged here can help scope that research.
 
 ## Authoritative references
 
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 - [Understanding WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/)
 - [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
+- [W3C WAI — Involving Users in Web Projects](https://www.w3.org/WAI/planning/involving-users/)
+- [W3C WAI — Involving Users in Evaluating Web Accessibility](https://www.w3.org/WAI/test-evaluate/involving-users/)
+- [GOV.UK — Running research sessions with disabled people](https://www.gov.uk/service-manual/user-research/running-research-sessions-with-people-with-disabilities)
+- [NHS Service Manual — Accessibility user research](https://service-manual.nhs.uk/accessibility/user-research)
+- [Fable — Accessibility research FAQs](https://makeitfable.com/article/accessibility-research-faqs/)
