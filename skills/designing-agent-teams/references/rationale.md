@@ -94,24 +94,24 @@ Not formally studied, but widely observed. Give a frontier model a focused task 
 
 Call domain specialists early (planning) and late (review) rather than just once at the end. Early assessment shapes the implementation instead of just judging it afterwards. The skill recommends this for concerns that are expensive to retrofit, like accessibility and security. Not every specialist needs both touchpoints. A documentation writer only needs a late pass.
 
-## Generator-evaluator separation
+## Agents can't judge their own work
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when the quality is obviously poor to a human. Tuning a standalone evaluator to be skeptical turned out to be far more tractable than making the builder critical of its own output. For frontend design, they had the evaluator use Playwright to interact with live pages before scoring against weighted criteria (design quality, originality, craft, functionality), calibrated with few-shot examples. Quality improved across 5–15 iteration cycles.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when quality is obviously poor to a human. Getting a separate agent to be harsh is easier than getting the builder to be honest. For frontend design, they gave the evaluator Playwright to click through live pages and score against weighted criteria (design quality, originality, craft, functionality), anchored with example scores. Quality improved across 5–15 iteration cycles.
 
-This is the independent Tester principle extended beyond functional correctness into subjective quality. Same mechanism — separate the judge from the maker — but grading criteria and tool-based interaction instead of test suites. The skill doesn't add new "generator" and "evaluator" roles; the Coder already generates, and the Tester and specialists already evaluate. The "Evaluator feedback loops" best practice describes how to give those existing roles an iterative feedback cycle.
+Same principle as the independent Tester — separate the judge from the maker — but with grading criteria and tool-based interaction instead of test suites. The Coder already generates, and the Tester and specialists already evaluate. The "Evaluator feedback loops" best practice describes how to give those existing roles an iterative feedback cycle.
 
-## Work contracts between agents
+## Work contracts prevent misaligned evaluations
 
-The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) describes a sprint contract pattern: before each chunk of work, the builder proposes what it'll build and how success will be verified, and the evaluating agent pushes back until they agree on a "definition of done." In one example, a single sprint had 27 testable criteria.
+The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) uses a sprint contract pattern: before each chunk of work, the Coder proposes what it'll build and how success will be verified, and the Tester pushes back until they agree on a "definition of done." One sprint had 27 testable criteria.
 
-Without a contract, the Tester grades against implicit expectations that may not match what the Coder intended. The skill now recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
+Without a contract, the Tester grades against implicit expectations that may not match what the Coder intended. The skill recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
 
-## Context resets vs. compaction
+## Context resets beat compaction for some models
 
-The same post found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — it started wrapping up work prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets entirely. The takeaway: context management strategy should track the specific model's behaviour, not be a fixed architectural decision. The gotchas section now warns about this.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — it started wrapping up prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets entirely. Context management strategy should track the specific model's behaviour, not be a fixed architectural decision. The gotchas section warns about this.
 
-## Scaffolding tracks model capability
+## Scaffolding goes stale as models improve
 
-A meta-lesson from the same post: every harness component encodes an assumption about what the model can't do on its own. Sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The Tester's value shifted from catching basic coherence failures to catching last-mile bugs as the Coder's model got better.
+Every harness component encodes an assumption about what the model can't do on its own. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) showed this concretely: sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The Tester's value shifted from catching basic coherence failures to catching last-mile bugs as the Coder's model got better.
 
-The skill's review checklist now asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity that isn't earning its keep should go.
+The review checklist now asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity that isn't earning its keep should go.
