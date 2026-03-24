@@ -40,12 +40,6 @@ Example prompts:
 - "What's left to do on this feature?"
 - "Help me prioritise my backlog"
 
-## Install all skills
-
-```bash
-npx skills add mattobee/skills
-```
-
 ## License
 
 MIT
