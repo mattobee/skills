@@ -257,6 +257,7 @@ Add work contracts when the Lead's output is intentionally high-level (as recomm
 - Different platforms handle subagent invocation differently. Consult the platform's documentation for current config syntax rather than assuming one platform's patterns work on another.
 - Do not override a platform's default/built-in agent when creating the Lead. The Lead must be a new, separately selectable agent. Overriding the default removes the user's access to it and conflates two different roles.
 - Use canonical stable model names in config files (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that goes stale. Check the provider's docs for current canonical IDs rather than guessing the format.
+- For long-running multi-session builds, context resets (clearing the window entirely and starting a fresh agent with a structured handoff artifact) can outperform compaction (summarising earlier conversation in place). Some models exhibit "context anxiety" — wrapping up work prematurely as they approach what they believe is their context limit. Compaction doesn't fix this because the agent still perceives a long history. A reset gives a clean slate. The tradeoff: handoff artifacts must carry enough state (current progress, next steps, key decisions, file locations) for the next agent to resume without re-reading the full codebase. Design these artifacts as part of the team's orchestration, not as an afterthought.
 
 ## Review checklist
 
@@ -274,3 +275,4 @@ When reviewing a team (any mode), check for:
 - **Redundant agents** — overlapping work that could consolidate
 - **Context window pressure** — fast-tier models have a smaller context window than frontier/mid-tier
 - **Would a single agent suffice?** — if the project is simple enough that one well-prompted agent handles it, a team adds overhead without value
+- **Stale scaffolding** — every component in a team encodes an assumption about what the model can't do on its own; when models improve, re-examine whether each piece is still load-bearing (e.g., sprint decomposition that was essential for one model generation may be unnecessary overhead for the next)
