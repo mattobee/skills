@@ -36,6 +36,10 @@ Red flags in a team's distribution:
 
 Build concrete escalation triggers, not vague "if it's hard" rules. Effective triggers: test failures after an attempt, error counts exceeding a threshold, the agent detecting it needs to reason across more files than its scope allows. Escalation should flow upward (fast → mid-tier → frontier) and be the exception, not the norm.
 
+## Context behaviour
+
+Some models exhibit "context anxiety" — they begin wrapping up work prematurely as they approach what they believe is their context limit, even when the task is incomplete. This varies by model generation and is more pronounced in some mid-tier models. When observed, context resets (starting a fresh agent with a structured handoff artifact) are more effective than compaction (summarising earlier context in place). Test this on your specific model before committing to a context management strategy.
+
 ## Cost levers
 
 - **Prompt caching** — shared context replayed across agent calls gets cached automatically; the savings are large
