@@ -12,6 +12,21 @@ npx skills add mattobee/skills
 
 ### Accessibility
 
+#### predicting-accessibility-risks
+
+Identifies accessibility risks in proposed features, designs, or technical plans before implementation begins. Produces a risk assessment with affected user groups, WCAG criteria, likelihood, cost to fix later, and specific mitigations.
+
+```bash
+npx skills add mattobee/skills --skill predicting-accessibility-risks
+```
+
+Example prompts:
+
+- "What accessibility risks should I watch for in this feature?"
+- "Assess this design for accessibility problems before I build it"
+- "What could go wrong for disabled users with this approach?"
+- "Is there anything about this plan that will be expensive to fix for accessibility later?"
+
 #### reviewing-accessibility
 
 Reviews implemented UI code for WCAG Level AA compliance. Covers semantic HTML, keyboard navigation, focus management, ARIA, labels, visual contrast, and forms. For pre-implementation risk assessment, use `predicting-accessibility-risks` instead.
@@ -41,21 +56,6 @@ Example prompts:
 - "Write axe scans for all routes in light and dark mode"
 - "What accessibility test coverage am I missing?"
 - "How do I test accessible names on web components with shadow DOM?"
-
-#### predicting-accessibility-risks
-
-Identifies accessibility risks in proposed features, designs, or technical plans before implementation begins. Produces a risk assessment with affected user groups, WCAG criteria, likelihood, cost to fix later, and specific mitigations.
-
-```bash
-npx skills add mattobee/skills --skill predicting-accessibility-risks
-```
-
-Example prompts:
-
-- "What accessibility risks should I watch for in this feature?"
-- "Assess this design for accessibility problems before I build it"
-- "What could go wrong for disabled users with this approach?"
-- "Is there anything about this plan that will be expensive to fix for accessibility later?"
 
 #### estimating-accessibility-effort
 
