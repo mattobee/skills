@@ -1,6 +1,6 @@
 ---
 name: designing-agent-teams
-description: Designs and refines multi-agent coding teams with optimal model-to-role assignments. Triggers for agent team creation, review, model selection, and cost/quality tradeoffs.
+description: Use this skill to design or refine a multi-agent coding team with model-to-role assignments. Triggers when creating an agent team for a codebase, adding agents to an existing team, reviewing an agent team configuration, choosing which AI model to assign to each role, or optimising cost/quality/speed tradeoffs across agents.
 compatibility: Requires file read/write access and bash.
 ---
 
@@ -85,6 +85,8 @@ Bring in specialists based on what the project needs. Each should cover a cross-
 - **Platform specialist** — for projects using 3+ external platforms (e.g., Supabase, Stripe, Sanity) where a single agent's context window can't hold all the platform tools simultaneously
 
 Prefer cross-cutting concern specialists (security, accessibility, performance) over tool-specific ones. Tool-specific agents are justified primarily by context window constraints, not domain expertise — if the project only uses one or two platforms, the coder can handle them with MCP access.
+
+When the project has relevant agent skills installed (e.g., `reviewing-accessibility`, `writing-accessibility-tests`), instruct specialist agents to load those skills for domain-specific procedures and checklists. This grounds the specialist in documented workflows rather than relying solely on the model's general knowledge.
 
 **4. Match cognitive demand to model tier.** See `references/model-guide.md` for the full heuristics. Summary:
 
