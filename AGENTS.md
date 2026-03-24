@@ -15,13 +15,19 @@ README.md                     # Skill listing with install commands
 LICENSE                       # MIT
 ```
 
-## Adding a New Skill
+## Adding or Editing a Skill
 
 1. Create `skills/[skill-name]/SKILL.md` with required frontmatter (`name`, `description`) and instructions.
 2. The `name` field must match the directory name exactly. Lowercase, hyphens only, no consecutive hyphens, 1–64 characters.
 3. Skill names use gerund form (e.g., `designing-agent-teams`, `suggesting-next-steps`, not `agent-team-design` or `next-steps`).
 4. Add the skill to the "Available Skills" section in `README.md` with a description and install command.
 5. Keep `SKILL.md` under 500 lines. Move detailed reference material to `references/`.
+6. **Validate against the spec.** Before finishing, fetch and check the skill against all three Agent Skills reference pages:
+   - [Specification](https://agentskills.io/specification) — frontmatter fields, naming rules, directory structure, progressive disclosure, file reference depth
+   - [Best practices](https://agentskills.io/skill-creation/best-practices) — grounded in real expertise, coherent scope, defaults not menus, procedures not declarations, gotchas, validation loops, script bundling, token budget
+   - [Description optimisation](https://agentskills.io/skill-creation/optimizing-descriptions) — imperative phrasing, user intent focus, pushy trigger coverage, conciseness, 1024-character limit
+
+   Fetch each page (they change over time — do not rely on memory) and audit the skill against every applicable guideline. Fix any issues before committing.
 
 ## Writing Style
 
