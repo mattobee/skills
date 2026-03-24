@@ -57,13 +57,15 @@ Involve disabled people at each phase — the earlier it happens, the cheaper it
 
 ### How
 
-Practical options for recruiting disabled participants:
+Scale the approach to the project. Not every project has a research budget, but every project can get closer to real feedback than technical analysis alone provides.
 
-- **Panel services** — [Fable](https://makeitfable.com/), [Access Works](https://knowbility.org/programs/accessworks) (Knowbility), and [AbilityNet](https://abilitynet.org.uk/) provide pre-qualified participants with documented assistive technology configurations.
-- **Disability organisations and charities** — local and national organisations can connect teams with potential participants.
-- **Internal staff disability networks** — often the fastest route to early feedback, though not a substitute for external research.
+**Solo and small projects** — test with a screen reader yourself (VoiceOver, NVDA, or TalkBack are free), ask a disabled friend or colleague to try key flows, post in accessibility communities for informal feedback, or use free single-session options from panel services. Even one person using assistive technology will reveal things automated checks cannot.
 
-Recruit based on assistive technology configuration, not diagnosis. What matters is how someone interacts with software (screen reader, switch access, voice control, magnification) rather than their medical history. The NHS benchmark of including 1 person with access needs in every 5 research participants is a reasonable starting point.
+**Teams with some research capacity** — include disabled participants in existing user research. The NHS benchmark of 1 person with access needs in every 5 research participants is a reasonable starting point. Recruit from disability organisations, charities, or internal staff disability networks.
+
+**Dedicated accessibility research** — panel services like [Fable](https://makeitfable.com/), [Access Works](https://knowbility.org/programs/accessworks) (Knowbility), and [AbilityNet](https://abilitynet.org.uk/) provide pre-qualified participants with documented assistive technology configurations. This is the most reliable option for structured usability testing across multiple AT setups.
+
+Regardless of scale, recruit based on assistive technology configuration, not diagnosis. What matters is how someone interacts with software (screen reader, switch access, voice control, magnification) rather than their medical history.
 
 ### What this skill cannot assess
 
