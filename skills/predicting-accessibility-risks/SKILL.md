@@ -29,7 +29,7 @@ For each risk identified, produce:
 | **WCAG criteria** | The success criteria at stake (e.g., 2.1.1 Keyboard, 1.3.1 Info and Relationships) |
 | **Likelihood** | How likely is this to occur without explicit attention? High (almost certain without mitigation), Medium (depends on implementation choices), Low (only if a specific mistake is made) |
 | **Cost to fix later** | How expensive is this to retrofit if caught after implementation? High (requires architectural changes), Medium (requires rework of multiple components), Low (localised fix) |
-| **Mitigation** | Specific, actionable recommendation to avoid the risk |
+| **Mitigation** | Specific, actionable recommendation to avoid the risk. Identify the pattern or approach ("use the APG dialog pattern", "ensure focus returns to the trigger on close"), not specific markup or API calls — implementation details belong in the coding phase where they can respond to the actual architecture |
 
 Focus on risks that meet at least one of these criteria:
 - High cost to fix later (structural or architectural)
@@ -187,6 +187,7 @@ Omit empty risk levels. If there are no high risks, do not include an empty High
 - **"We'll add accessibility later" is itself the highest risk.** If the plan defers accessibility to a future sprint, flag this explicitly. Retrofitting accessibility onto a finished feature is consistently and often significantly more expensive than building it in from the start.
 - **Consider the full range of disabilities.** Accessibility reviews disproportionately focus on screen reader users. Keyboard-only users, users with low vision (who may not use screen readers), users with cognitive disabilities, and users with motor impairments all have distinct needs. Name the affected group explicitly.
 - **Custom components carry more risk than standard HTML.** A `<button>` has built-in keyboard handling, focus management, and role. A `<div onClick>` has none of these. The more custom the implementation, the higher the risk.
+- **Mitigations should identify patterns, not prescribe code.** "Use the APG combobox pattern" is appropriate for a planning skill. "Add `role="combobox" aria-expanded="false" aria-haspopup="listbox"` to the input wrapper" is implementation detail that belongs in a code review, not a risk assessment. Premature specificity narrows the solution space and carries unearned authority if a developer treats it as reviewed implementation guidance.
 - **This risk assessment is not a substitute for involving disabled people.** It identifies technical patterns likely to cause barriers, but it cannot evaluate whether an interface is actually usable by people with disabilities. Plan user research with disabled participants — the risks flagged here can help scope that research.
 
 ## Authoritative references
