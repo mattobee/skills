@@ -27,7 +27,7 @@ Example prompts:
 
 ### reviewing-accessibility
 
-Reviews UI changes for WCAG Level AA compliance using a dual-touchpoint approach: early risk assessment before implementation, and post-implementation code review. Covers semantic HTML, keyboard navigation, focus management, ARIA, labels, visual contrast, and forms.
+Reviews implemented UI code for WCAG Level AA compliance. Covers semantic HTML, keyboard navigation, focus management, ARIA, labels, visual contrast, and forms. For pre-implementation risk assessment, use `predicting-accessibility-risks` instead.
 
 ```bash
 npx skills add mattobee/skills --skill reviewing-accessibility
@@ -36,9 +36,9 @@ npx skills add mattobee/skills --skill reviewing-accessibility
 Example prompts:
 
 - "Review this component for accessibility"
-- "What accessibility risks should I consider before building this feature?"
 - "Audit this page against WCAG AA"
 - "Is my form handling accessible?"
+- "Check whether this dialog meets accessibility requirements"
 
 ### writing-accessibility-tests
 
