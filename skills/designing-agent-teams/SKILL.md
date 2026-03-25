@@ -68,7 +68,7 @@ Think of the agent team like a human dev team: a small core that's always presen
 
 **Core team (always present):**
 
-- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one. Plans should stay at the product and architectural level — specifying deliverables, user stories, and high-level technical direction rather than granular implementation details. Errors in over-specified plans cascade into downstream implementation.
+- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one. Plans should stay at the product and architectural level, not granular implementation steps. Over-specified plans cascade errors downstream.
 - **Coder** — the developer. Implements features and fixes within scoped boundaries.
 - **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is one of the highest-impact structural decisions in a multi-agent team.
 
@@ -224,24 +224,22 @@ This avoids wasted specialist reviews on code that's about to change due to test
 
 ### Evaluator feedback loops
 
-For tasks with subjective quality dimensions (visual design, UX, content tone) or complex integration surfaces, a single pass/fail gate is often insufficient. The Tester or a specialist can grade the Coder's output against explicit criteria and send structured feedback for iterative refinement, rather than just passing or failing a test suite.
+For tasks where quality is subjective (visual design, UX, content tone), a single pass/fail gate is not enough. The Tester or a specialist can grade the Coder's output against explicit criteria and iterate, rather than just passing or failing.
 
 This works when:
 
-- The evaluating agent is separate from the one that did the work — agents confidently praise their own mediocre output, and tuning a Tester or specialist to be skeptical is far more tractable than making the Coder self-critical
+- The evaluator is separate from the builder — agents praise their own mediocre work. Tuning a separate agent to be harsh is easier than making the Coder self-critical
 - Grading criteria are concrete and weighted (not "is this good?" but "does this follow these specific principles?"), with priorities that push the Coder away from safe defaults
 - The evaluating agent is calibrated with few-shot examples showing expected scores for representative outputs
 - The evaluating agent uses tools to interact with the output (e.g., Playwright for UI, API calls for backends) rather than just reading code
 
-Deterministic quality gates (tests, linting, type-checks) remain the primary gate. Evaluator loops are a secondary mechanism for quality dimensions that automated tools cannot measure. Running 3–5 iterations typically yields diminishing returns; budget accordingly.
+Deterministic gates (tests, linting, type-checks) stay primary. Evaluator loops cover what automated tools can't measure. 3–5 iterations typically hit diminishing returns.
 
 ### Work contracts
 
-Before the Coder begins a chunk of work, have it negotiate a work contract with the Tester (or whichever agent will evaluate the result): what will be built, and what criteria define "done." The Coder proposes scope and acceptance criteria, the evaluating agent reviews and pushes back, and both agree before implementation starts.
+Before the Coder starts a chunk of work, have it agree a work contract with the Tester: what will be built, and what counts as "done." The Coder proposes scope and acceptance criteria, the Tester pushes back, and both agree before implementation starts.
 
-This bridges the gap between a high-level plan and testable implementation. The Tester knows exactly what to test, and the Coder knows what standard it will be held to. Without a contract, the evaluating agent grades against implicit expectations that may not match what the Coder intended to build.
-
-Add work contracts when the Lead's output is intentionally high-level (as recommended) and the gap between spec and testable implementation is wide enough that misalignment is likely.
+This closes the gap between a high-level plan and testable output. Without a contract, the Tester grades against implicit expectations. Use work contracts when the Lead's plan is intentionally high-level and the spec-to-implementation gap is wide enough for misalignment.
 
 ## Gotchas
 
@@ -257,7 +255,7 @@ Add work contracts when the Lead's output is intentionally high-level (as recomm
 - Different platforms handle subagent invocation differently. Consult the platform's documentation for current config syntax rather than assuming one platform's patterns work on another.
 - Do not override a platform's default/built-in agent when creating the Lead. The Lead must be a new, separately selectable agent. Overriding the default removes the user's access to it and conflates two different roles.
 - Use canonical stable model names in config files (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that goes stale. Check the provider's docs for current canonical IDs rather than guessing the format.
-- For long-running multi-session builds, context resets (clearing the window entirely and starting a fresh agent with a structured handoff artifact) can outperform compaction (summarising earlier conversation in place). Some models exhibit "context anxiety" — wrapping up work prematurely as they approach what they believe is their context limit. Compaction doesn't fix this because the agent still perceives a long history. A reset gives a clean slate. The tradeoff: handoff artifacts must carry enough state (current progress, next steps, key decisions, file locations) for the next agent to resume without re-reading the full codebase. Design these artifacts as part of the team's orchestration, not as an afterthought.
+- For long-running builds, context resets (fresh agent with a handoff artifact) can outperform compaction (summarising in place). Some models exhibit "context anxiety" — wrapping up prematurely as context fills. Compaction doesn't fix this; the agent still perceives a long history. The tradeoff: handoff artifacts must carry enough state (progress, next steps, decisions, file locations) for the next agent to resume cold.
 
 ## Review checklist
 
@@ -275,4 +273,4 @@ When reviewing a team (any mode), check for:
 - **Redundant agents** — overlapping work that could consolidate
 - **Context window pressure** — fast-tier models have a smaller context window than frontier/mid-tier
 - **Would a single agent suffice?** — if the project is simple enough that one well-prompted agent handles it, a team adds overhead without value
-- **Stale scaffolding** — every component in a team encodes an assumption about what the model can't do on its own; when models improve, re-examine whether each piece is still load-bearing (e.g., sprint decomposition that was essential for one model generation may be unnecessary overhead for the next)
+- **Stale scaffolding** — every team component encodes an assumption about what the model can't do alone; when models improve, check whether each piece is still load-bearing (e.g., sprint decomposition essential for one generation may be overhead for the next)

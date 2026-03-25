@@ -38,7 +38,7 @@ Build concrete escalation triggers, not vague "if it's hard" rules. Effective tr
 
 ## Context behaviour
 
-Some models exhibit "context anxiety" — they begin wrapping up work prematurely as they approach what they believe is their context limit, even when the task is incomplete. This varies by model generation and is more pronounced in some mid-tier models. When observed, context resets (starting a fresh agent with a structured handoff artifact) are more effective than compaction (summarising earlier context in place). Test this on your specific model before committing to a context management strategy.
+Some models exhibit "context anxiety" — wrapping up work prematurely as they approach what they believe is their context limit. This varies by model generation and is more pronounced in some mid-tier models. When observed, context resets (fresh agent with a handoff artifact) work better than compaction (summarising in place). Test on your specific model before committing to a strategy.
 
 ## Cost levers
 

@@ -96,22 +96,22 @@ Call domain specialists early (planning) and late (review) rather than just once
 
 ## Agents can't judge their own work
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work, even when quality is obviously poor to a human. Getting a separate agent to be harsh is easier than getting the builder to be honest. For frontend design, they gave the evaluator Playwright to click through live pages and score against weighted criteria (design quality, originality, craft, functionality), anchored with example scores. Quality improved across 5–15 iteration cycles.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work. Getting a separate agent to be harsh is easier than getting the builder to be honest. For frontend design, they gave the evaluator Playwright to score live pages against weighted criteria, anchored with example scores. Quality improved across 5–15 iterations.
 
-Same principle as the independent Tester — separate the judge from the maker — but with grading criteria and tool-based interaction instead of test suites. The Coder already generates, and the Tester and specialists already evaluate. The "Evaluator feedback loops" best practice describes how to give those existing roles an iterative feedback cycle.
+Same principle as the independent Tester — separate the judge from the maker — but with grading criteria and tool-based interaction instead of test suites. The "Evaluator feedback loops" best practice applies this to the existing Tester and specialist roles.
 
 ## Work contracts prevent misaligned evaluations
 
-The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) uses a sprint contract pattern: before each chunk of work, the Coder proposes what it'll build and how success will be verified, and the Tester pushes back until they agree on a "definition of done." One sprint had 27 testable criteria.
+The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) uses a sprint contract pattern: before each chunk of work, the Coder proposes what it'll build and how "done" is defined, and the Tester pushes back until they agree. One sprint had 27 testable criteria.
 
-Without a contract, the Tester grades against implicit expectations that may not match what the Coder intended. The skill recommends work contracts when the gap between spec and testable implementation is wide enough for misalignment.
+Without a contract, the Tester grades against implicit expectations. The skill recommends work contracts when the spec-to-implementation gap is wide enough for misalignment.
 
 ## Context resets beat compaction for some models
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — it started wrapping up prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets entirely. Context management strategy should track the specific model's behaviour, not be a fixed architectural decision. The gotchas section warns about this.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — wrapping up prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets. Context management strategy should track the model, not be a fixed architectural choice. The gotchas section warns about this.
 
 ## Scaffolding goes stale as models improve
 
-Every harness component encodes an assumption about what the model can't do on its own. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) showed this concretely: sprint decomposition was essential for Opus 4.5 but unnecessary overhead for Opus 4.6. The Tester's value shifted from catching basic coherence failures to catching last-mile bugs as the Coder's model got better.
+Every harness component encodes an assumption about what the model can't do alone. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) showed this concretely: sprint decomposition was essential for Opus 4.5 but overhead for Opus 4.6. The Tester's value shifted from catching coherence failures to catching last-mile bugs as the Coder improved.
 
-The review checklist now asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity that isn't earning its keep should go.
+The review checklist asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity not earning its keep should go.
