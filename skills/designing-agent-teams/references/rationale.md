@@ -96,22 +96,22 @@ Call domain specialists early (planning) and late (review) rather than just once
 
 ## Agents can't judge their own work
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that agents confidently praise their own mediocre work. Getting a separate agent to be harsh is easier than getting the builder to be honest. For frontend design, they gave the evaluator Playwright to score live pages against weighted criteria, anchored with example scores. Quality improved across 5–15 iterations.
+Agents confidently praise their own mediocre output. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) confirmed this. Getting a separate agent to be harsh is easier than getting the builder to be honest. For frontend work, they gave the evaluator Playwright to click through live pages and score against weighted criteria, anchored with example scores. Quality improved over 5–15 iterations.
 
-Same principle as the independent Tester — separate the judge from the maker — but with grading criteria and tool-based interaction instead of test suites. The "Evaluator feedback loops" best practice applies this to the existing Tester and specialist roles.
+Same idea as the independent Tester (separate the judge from the maker) but with grading criteria and tool interaction instead of test suites. The "Evaluator feedback loops" best practice applies this to the Tester and specialist roles.
 
-## Work contracts prevent misaligned evaluations
+## Work contracts keep the Tester and Coder aligned
 
 The same [Anthropic post](https://www.anthropic.com/engineering/harness-design-long-running-apps) uses a sprint contract pattern: before each chunk of work, the Coder proposes what it'll build and how "done" is defined, and the Tester pushes back until they agree. One sprint had 27 testable criteria.
 
-Without a contract, the Tester grades against implicit expectations. The skill recommends work contracts when the spec-to-implementation gap is wide enough for misalignment.
+Without a contract, the Tester grades against whatever it thinks "done" looks like, which may not match what the Coder intended. The skill recommends work contracts when the gap between spec and implementation is wide enough for that to happen.
 
 ## Context resets beat compaction for some models
 
-Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that context resets (clean slate with a handoff artifact) beat compaction (in-place summarisation) for Sonnet 4.5, which exhibited "context anxiety" — wrapping up prematurely as context filled. Opus 4.5 and 4.6 reduced this enough to drop resets. Context management strategy should track the model, not be a fixed architectural choice. The gotchas section warns about this.
+Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) found that context resets (clean slate with a handoff artifact) beat compaction (summarising in place) for Sonnet 4.5, which started wrapping up prematurely as context filled. They call it "context anxiety." Opus 4.5 and 4.6 reduced this enough to drop resets. Pick your context strategy based on the model, not as a one-size-fits-all rule. The gotchas section warns about this.
 
 ## Scaffolding goes stale as models improve
 
-Every harness component encodes an assumption about what the model can't do alone. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) showed this concretely: sprint decomposition was essential for Opus 4.5 but overhead for Opus 4.6. The Tester's value shifted from catching coherence failures to catching last-mile bugs as the Coder improved.
+Every piece of scaffolding assumes the model can't do something on its own. Anthropic's [harness design post](https://www.anthropic.com/engineering/harness-design-long-running-apps) showed this concretely: sprint decomposition was essential for Opus 4.5 but just overhead for Opus 4.6. The Tester's value shifted from catching coherence failures to catching last-mile bugs as the Coder got better.
 
-The review checklist asks about stale scaffolding for the same reason it asks "would a single agent suffice?" — complexity not earning its keep should go.
+The review checklist asks about stale scaffolding for the same reason it asks "would a single agent suffice?" If it's not earning its keep, drop it.
