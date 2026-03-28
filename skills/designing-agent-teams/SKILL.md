@@ -68,7 +68,7 @@ Think of the agent team like a human dev team: a small core that's always presen
 
 **Core team (always present):**
 
-- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one. Plans should stay at the product and architectural level, not granular implementation steps. Over-specified plans cascade errors downstream.
+- **Lead** — the tech lead. Decomposes tasks, delegates, tracks dependencies, reviews results. Every team has one. Plans should stay at the product and architectural level, not granular implementation steps. Over-specified plans cascade errors downstream. Briefs should reference existing project guidelines (e.g., a token architecture doc, a style guide) rather than repeating their contents inline.
 - **Coder** — the developer. Implements features and fixes within scoped boundaries.
 - **Tester** — the QA engineer. Writes tests _independently from the coder_ to avoid confirmation bias. Separating test authorship from code authorship is one of the highest-impact structural decisions in a multi-agent team.
 
@@ -213,6 +213,8 @@ Not every specialist needs two touchpoints. Use dual-touchpoint for concerns tha
 
 When using dual-touchpoint specialists, name them "Specialist" rather than "Reviewer" — "Reviewer" implies they only look at finished work and doesn't reflect the advisory role.
 
+The early-pass output should include a structured **"Coder Requirements"** section: a numbered list of specific, implementable requirements arising from the risk assessment. Each item states *what* to do and *why* (citing the relevant standard or criterion). This section is passed directly to the Coder — write it for that audience. The Lead should pass this section verbatim rather than summarising it; detail is lost in translation when the Lead paraphrases specialist guidance.
+
 ### Ordering quality gates
 
 When multiple quality-gate agents run after implementation, order them by dependency:
@@ -256,6 +258,7 @@ This closes the gap between a high-level plan and testable output. Without a con
 - Do not override a platform's default/built-in agent when creating the Lead. The Lead must be a new, separately selectable agent. Overriding the default removes the user's access to it and conflates two different roles.
 - Use canonical stable model names in config files (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that goes stale. Check the provider's docs for current canonical IDs rather than guessing the format.
 - For long-running builds, context resets (fresh agent with a handoff artifact) can outperform compaction (summarising in place). Some models exhibit "context anxiety" — wrapping up prematurely as context fills. Compaction doesn't fix this; the agent still perceives a long history. The tradeoff: handoff artifacts must carry enough state (progress, next steps, decisions, file locations) for the next agent to resume cold.
+- In sequential teams where the Lead coordinates, the Coder should not create git commits independently. The Lead reviews and commits after verifying the build. Without this constraint, mid-tier models occasionally make unsanctioned commits during implementation, bypassing quality gates.
 
 ## Review checklist
 

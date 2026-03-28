@@ -382,6 +382,7 @@ Do not report results from tests that have not been executed. A test that looks 
 - **Dialogs using `<dialog>` with `showModal()` render in the top layer.** The host element may have `height: 0`, making `isVisible()` unreliable. Check the `open` attribute instead.
 - **Contrast helpers only work with `rgb()`/`rgba()` strings.** `getComputedStyle` returns computed values, which are always `rgb()`/`rgba()` in modern browsers, but verify the parsing works in the project's browser targets.
 - **Do not test what axe already catches.** Writing a Playwright assertion for "button has accessible name" when axe would already flag a nameless button adds maintenance cost with no coverage gain. Layer 2 assertions are for things axe structurally cannot detect.
+- **Scope locators to landmarks when content repeats.** Pages with repeated patterns (e.g., a "View on GitHub" link in both header and footer) cause ambiguous locator matches. Scope to the landmark: `page.getByRole('banner').getByRole('link', { name: 'GitHub' })` instead of `page.getByRole('link', { name: 'GitHub' })`.
 
 ## Authoritative references
 
