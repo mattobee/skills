@@ -10,6 +10,10 @@ This skill uses a three-tier model framework. Match cognitive demand to model ti
 
 **Fast — The speed specialist.** Fastest and cheapest, with a smaller context window. Use for bounded, well-defined tasks: file exploration, grep, boilerplate, docstrings, commit messages, simple edits. Ideal for high-volume operations and preliminary exploration before handing off to a more capable agent. If escalation rate from a fast-tier agent exceeds ~30%, the tasks assigned to it are too complex for this tier.
 
+## Per-touchpoint tier variation
+
+Dual-touchpoint agents (see SKILL.md) don't have to use the same model tier for both passes. Early passes (advisory — risk assessment, threat modelling) benefit from mid-tier reasoning. Late passes (review — checklist-driven evaluation with skill support) can use fast-tier models when agent instructions are structured and skill-guided. This reduces cost on the higher-volume touchpoint without sacrificing review quality.
+
 ## Provider mapping
 
 | Tier     | Anthropic     | OpenAI              | Google                |

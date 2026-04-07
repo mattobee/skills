@@ -211,6 +211,8 @@ This is more effective than a single review gate at the end, because:
 
 Not every specialist needs two touchpoints. Use dual-touchpoint for concerns that are expensive to retrofit (accessibility, security). A documentation writer, for instance, only needs a late pass.
 
+Dual-touchpoint specialists can use different model tiers per touchpoint. Early passes (risk assessment, threat modelling) benefit from mid-tier reasoning depth — the specialist needs to reason about interaction patterns, attack vectors, or architectural implications. Late passes (checklist-driven review against established criteria like WCAG or OWASP) can run on fast-tier models when the agent instructions are structured for skill-guided evaluation. Since late passes are the higher-volume touchpoint (they run on both Full and Standard pipeline tasks — see "Task classification" below), making them fast-tier-friendly is a significant cost and speed optimisation.
+
 When using dual-touchpoint specialists, name them "Specialist" rather than "Reviewer" — "Reviewer" implies they only look at finished work and doesn't reflect the advisory role.
 
 The early-pass output should include a structured **"Coder Requirements"** section: a numbered list of specific, implementable requirements arising from the risk assessment. Each item states *what* to do and *why* (citing the relevant standard or criterion). This section is passed directly to the Coder — write it for that audience. The Lead should pass this section verbatim rather than summarising it; detail is lost in translation when the Lead paraphrases specialist guidance.
@@ -223,6 +225,39 @@ When multiple quality-gate agents run after implementation, order them by depend
 2. **Domain specialists** second — review working, tested code against domain criteria (accessibility, security, etc.).
 
 This avoids wasted specialist reviews on code that's about to change due to test failures.
+
+### Task classification
+
+Not every task needs the full agent pipeline. The Lead should classify each incoming request to determine which specialist passes to invoke:
+
+| Pipeline | Specialist passes | When |
+|---|---|---|
+| **Full** | Early + Late | Novel patterns, new auth flows, custom widgets, complex interactions |
+| **Standard** | Late only | CRUD routes, forms, component additions, standard patterns |
+| **Lightweight** | None — quality gates only | Config, deps, copy, styling, pure refactors |
+
+The default should be the cheapest pipeline that doesn't sacrifice quality for the task type. Most tasks in a mature codebase are Standard or Lightweight — a new CRUD endpoint doesn't need a threat model if the project has established auth and validation patterns.
+
+For Standard tasks, the Lead substitutes early specialist passes with a standing guidance reference in the Coder's brief (see "Standing conventions" below). Late passes still run, but specialists focus on issues beyond the baseline.
+
+This classification is a template — adapt the tiers and criteria to your project. The principle is: invest specialist attention where it changes outcomes, not uniformly across all tasks.
+
+### Standing conventions
+
+Task classification only works if the Coder has baseline guidance to follow when early specialist passes are skipped. Codify recurring specialist recommendations as standing conventions in a shared reference document (e.g., `STACK.md`, a project conventions file, or a dedicated section of the README).
+
+Standing conventions should cover the fundamentals that apply to every task:
+
+- **Accessibility**: semantic HTML, labels, alt text, keyboard access, focus indicators, contrast via theme tokens, touch targets, error associations, live regions
+- **Security**: input validation, parameterised queries, response shaping, auth middleware, error handling, secrets management
+
+The Coder follows these on every task regardless of pipeline tier. When classifying a task as Standard, the Lead appends a brief guidance note to the Coder's brief:
+
+> **Accessibility**: Follow standing accessibility conventions in [reference doc]. [Task-specific notes.]
+>
+> **Security**: Follow standing security conventions in [reference doc]. [Task-specific notes.]
+
+This lets the Lead add task-specific guidance without invoking the full specialist pass. The specialist late pass then focuses on issues *beyond* the standing conventions — complex interaction patterns, non-obvious vulnerabilities, edge cases the baseline doesn't cover — rather than re-checking fundamentals.
 
 ### Evaluator feedback loops
 
