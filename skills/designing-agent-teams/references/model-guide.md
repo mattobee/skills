@@ -18,13 +18,19 @@ Dual-touchpoint agents (see SKILL.md) don't have to use the same model tier for 
 
 | Tier     | Anthropic     | OpenAI              | Google                |
 | -------- | ------------- | ------------------- | --------------------- |
-| Frontier | Claude Opus   | GPT-4o / o3         | Gemini 2.5 Pro        |
-| Mid-tier | Claude Sonnet | GPT-4.1             | Gemini 2.5 Flash      |
-| Fast     | Claude Haiku  | GPT-4.1 mini / nano | Gemini 2.0 Flash-Lite |
+| Frontier | Claude Opus   | GPT-5.2             | Gemini 3 Pro          |
+| Mid-tier | Claude Sonnet | GPT-5 Mini          | Gemini 3 Flash        |
+| Fast     | Claude Haiku  | GPT-5 Mini          | Gemini 3 Flash        |
 
 Models and naming change frequently. Check your provider's current model lineup when configuring agents. The tier assignments above are approximate — evaluate based on capability benchmarks, context window size, and cost for your use case.
 
 When writing model IDs in config files, use the provider's canonical stable name (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that will go stale. Canonical names automatically resolve to the latest version. Check the provider's documentation for current canonical IDs — do not guess the format.
+
+## Cross-family review
+
+For specialist agents (accessibility, security) that review code written by the core team, use a model from a **different provider family** than the Coder. This mitigates shared training blind spots. See `references/rationale.md` for the research backing.
+
+When choosing the cross-family reviewer, prefer the model family with the strongest empirical performance on the specialist's domain. Check domain-specific benchmarks (e.g., [Microsoft's a11y-llm-eval](https://github.com/microsoft/a11y-llm-eval) for accessibility) rather than relying on general coding benchmarks alone.
 
 ## The 70/20/10 rule
 
@@ -43,6 +49,19 @@ Build concrete escalation triggers, not vague "if it's hard" rules. Effective tr
 ## Context behaviour
 
 Some models exhibit "context anxiety" — wrapping up work prematurely as they approach what they believe is their context limit. This varies by model generation and is more pronounced in some mid-tier models. When observed, context resets (fresh agent with a handoff artifact) work better than compaction (summarising in place). Test on your specific model before committing to a strategy.
+
+## Cross-family review
+
+When specialist agents review code written by other agents, use a model from a **different provider family** than the one that wrote the code. A Claude-based Coder reviewed by a GPT-based specialist catches errors that a Claude-based reviewer would share as blind spots.
+
+This is supported by two findings:
+
+- **GitHub's Rubber Duck research** showed that cross-family review (Claude + GPT) closed 74.7% of the performance gap between a mid-tier model working alone and a frontier model. Same-family review showed significantly less improvement.
+- **Microsoft's a11y-llm-eval benchmark** revealed that models within the same family share systematic blind spots on domain-specific tasks like accessibility. GPT-5.2 scored a 41% WCAG pass rate while all three Claude models and both Gemini models scored 0–2%.
+
+Cross-family review matters most for specialist roles (accessibility, security) where domain-specific blind spots are expensive. It matters less for the core team (Lead, Coder, Tester), where the same family can be used throughout — the value there comes from role separation, not model diversity.
+
+When choosing the cross-family reviewer, prefer the model family with the strongest empirical performance on the specialist's domain. Check domain-specific benchmarks (e.g., Microsoft's a11y-llm-eval for accessibility) rather than relying on general coding benchmarks alone.
 
 ## Cost levers
 

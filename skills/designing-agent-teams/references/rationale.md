@@ -62,6 +62,40 @@ The skill recommends tool-specific specialist agents mainly as a context window 
 
 The skill's review checklist asks "would a single agent suffice?" because a well-prompted single agent with a clear spec beats a poorly-coordinated team every time.
 
+## Cross-family review catches blind spots same-family review misses
+
+[GitHub's Rubber Duck research](https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-combines-model-families-for-a-second-opinion/) showed that using a model from a different provider family as a reviewer closed 74.7% of the gap between a mid-tier model (Claude Sonnet) and a frontier model (Claude Opus) on SWE-bench Pro. The mechanism is straightforward: models from the same family share training data and optimisation objectives, so they share blind spots. A reviewer from a different family has different blind spots, catching errors the original model would miss.
+
+The impact was strongest on complex, multi-file tasks spanning 70+ steps. Three high-value checkpoints emerged: after planning, after complex implementation, and after writing tests — exactly the points where the skill already recommends specialist review.
+
+This is why the skill recommends using a different model family for specialist reviewers (accessibility, security) than for the core team (Lead, Coder, Tester). The cross-family benefit matters most for domain-specialist review, where systematic blind spots on specialised knowledge (WCAG patterns, OWASP criteria) compound with same-family bias. For the core team, role separation (independent Tester) provides the primary quality benefit; model diversity adds less marginal value there.
+
+## Models have systematically different accessibility capabilities
+
+[Microsoft's a11y-llm-eval](https://github.com/microsoft/a11y-llm-eval) benchmarked 10 models on generating accessible HTML across disclosure widgets, modal dialogs, radio button groups, shopping pages, and contact forms. Each model generated 25 samples per test case (100 total), evaluated against axe-core and custom WCAG assertions.
+
+The results showed dramatic variation across model families:
+
+| Model | WCAG Pass Rate | Avg Total Failures |
+|-------|---------------|--------------------|
+| GPT-5.2 | 41% | 8.94 |
+| GPT-5 Mini | 30% | 3.93 |
+| GPT-5.2 Codex | 23% | 4.04 |
+| Gemini 3 Pro | 2% | 5.88 |
+| Gemini 3 Flash | 0% | 4.24 |
+| Claude Haiku 4.5 | 0% | 11.30 |
+| Claude Sonnet 4.5 | 0% | 12.23 |
+| Claude Opus 4.6 | 0% | 17.99 |
+
+The GPT-5 family significantly outperformed all other model families on accessibility-specific tasks. This is not about general coding ability (Claude Opus is the strongest general coder) — it's about domain-specific training that leads to better default accessible patterns.
+
+Two implications for team design:
+
+1. **Domain benchmarks matter more than general benchmarks for specialist assignment.** A model that leads general coding benchmarks may trail badly on domain-specific tasks. Check domain-specific evaluations (e.g., a11y-llm-eval for accessibility) when choosing specialist models.
+2. **Cross-family diversity is even more valuable when model families have different domain strengths.** A Claude-based Coder reviewed by a GPT-based accessibility specialist combines Claude's strong general coding with GPT's superior accessibility knowledge — neither family alone covers both.
+
+The benchmark also tested custom instruction sets and found that even minimal accessibility instructions ("All output MUST be accessible") improved pass rates, confirming that prompt design matters alongside model selection.
+
 ## Design choices
 
 These aren't research findings. They're architectural decisions that felt right for the skill.

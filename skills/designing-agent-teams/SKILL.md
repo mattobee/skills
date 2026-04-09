@@ -94,27 +94,29 @@ When the project has relevant agent skills installed (e.g., `reviewing-accessibi
 - **Mid-tier** — code generation, independent test writing, feature implementation, standard refactoring
 - **Fast** — file exploration, boilerplate, docstrings, grep-style searches, simple edits
 
-**5. Prevent write conflicts.** How strictly to scope write access depends on whether agents run in parallel or sequentially:
+**5. Use cross-family models for specialist review.** When specialist agents (accessibility, security) review code written by the Coder, assign them a model from a different provider family. Models from the same family share training biases and blind spots — a Claude-based reviewer is unlikely to catch errors that a Claude-based Coder also missed. Cross-family review (e.g., GPT reviewing Claude-generated code) closes significantly more of the gap to frontier quality. Choose the reviewing family based on domain-specific benchmarks, not general coding benchmarks. See `references/model-guide.md` for guidance and `references/rationale.md` for the research backing.
+
+**6. Prevent write conflicts.** How strictly to scope write access depends on whether agents run in parallel or sequentially:
 
 - **Parallel agents** (e.g., Claude Code Agent Teams, tmux worktrees): assign each agent to distinct directories or modules. Two agents writing to the same file simultaneously will overwrite each other's work. Use git worktree isolation where the platform supports it.
 - **Sequential agents** (e.g., lead delegates one task at a time): file conflicts are less likely since agents take turns, but still scope write access to what each agent actually needs. A tester should write to test directories, not source code. A docs agent should write to documentation files, not application logic.
 
 In both cases, when a task genuinely crosses boundaries, the lead should coordinate the handoff rather than giving multiple agents overlapping write access.
 
-**6. Scope tools tightly.** Each agent gets only the tools it needs. A documentation agent does not need shell access. A file explorer does not need write permissions.
+**7. Scope tools tightly.** Each agent gets only the tools it needs. A documentation agent does not need shell access. A file explorer does not need write permissions.
 
-**7. Ground specialists in official sources.** Specialist agents for specific tools or platforms (e.g., Supabase, Vercel, Sanity, Netlify) should defer to authoritative sources rather than relying on the model's training knowledge, which may be outdated or incomplete. When designing a specialist agent:
+**8. Ground specialists in official sources.** Specialist agents for specific tools or platforms (e.g., Supabase, Vercel, Sanity, Netlify) should defer to authoritative sources rather than relying on the model's training knowledge, which may be outdated or incomplete. When designing a specialist agent:
 
 - If the tool has an MCP server, include it in the agent's tool configuration and instruct the agent to use it for API lookups, schema queries, and platform operations.
 - If the tool has official documentation, instruct the agent to consult it (via web fetch or a bundled reference) before generating platform-specific code.
 - The agent's system prompt should explicitly state: use the official docs/MCP as the source of truth; do not guess at API signatures, configuration options, or platform behaviour.
 - Check for available MCP servers at the tool's documentation site or the MCP registry. Common examples: Supabase, Stripe, Netlify, Sentry, Linear, GitHub, Notion.
 
-**8. Design for escalation.** Build concrete escalation paths: test failures, error counts, or complexity markers trigger handoff from cheaper to more capable agents.
+**9. Design for escalation.** Build concrete escalation paths: test failures, error counts, or complexity markers trigger handoff from cheaper to more capable agents.
 
-**9. Use deterministic quality gates.** Do not rely on an LLM to judge whether its own work is good enough. Quality gates should be automated and deterministic: linting, type-checking, test pass rates, build success. An LLM reviewer in a fresh context adds value for nuanced issues (security patterns, architectural fit), but the primary gate must be tooling, not judgment.
+**10. Use deterministic quality gates.** Do not rely on an LLM to judge whether its own work is good enough. Quality gates should be automated and deterministic: linting, type-checking, test pass rates, build success. An LLM reviewer in a fresh context adds value for nuanced issues (security patterns, architectural fit), but the primary gate must be tooling, not judgment.
 
-**10. Target the 70/20/10 split.** Roughly 70% fast, 20% mid-tier, 10% frontier by call volume. If more than 30% of calls go to frontier models, re-examine whether those tasks genuinely need top-tier reasoning.
+**11. Target the 70/20/10 split.** Roughly 70% fast, 20% mid-tier, 10% frontier by call volume. If more than 30% of calls go to frontier models, re-examine whether those tasks genuinely need top-tier reasoning.
 
 ## Generate outputs
 
@@ -294,6 +296,7 @@ This closes the gap between a high-level plan and testable output. Without a con
 - Use canonical stable model names in config files (e.g., `claude-sonnet-4`, not `claude-sonnet-4-20250514`). Dated snapshot IDs pin to a specific version that goes stale. Check the provider's docs for current canonical IDs rather than guessing the format.
 - For long-running builds, context resets (fresh agent with a handoff artifact) can outperform compaction (summarising in place). Some models exhibit "context anxiety" — wrapping up prematurely as context fills. Compaction doesn't fix this; the agent still perceives a long history. The tradeoff: handoff artifacts must carry enough state (progress, next steps, decisions, file locations) for the next agent to resume cold.
 - In sequential teams where the Lead coordinates, the Coder should not create git commits independently. The Lead reviews and commits after verifying the build. Without this constraint, mid-tier models occasionally make unsanctioned commits during implementation, bypassing quality gates.
+- A specialist reviewer from the same model family as the Coder shares the same training biases. If both are Claude, the reviewer is unlikely to catch accessibility or security patterns that Claude systematically misses. Use a different model family for specialist review — the cross-family benefit is well-documented (see `references/rationale.md`).
 
 ## Review checklist
 
@@ -306,6 +309,7 @@ When reviewing a team (any mode), check for:
 - **Unjustified agents** — every agent should cover a concern that would otherwise be missed; remove any that duplicate another agent's scope
 - **Missing specialists** — if the project has accessibility, security, or compliance requirements, check whether dedicated specialist agents are needed
 - **Over-assignment to frontier** — tasks a mid-tier model handles equally well
+- **Same-family specialist review** — if the Coder and a specialist reviewer use models from the same provider family, they share blind spots; cross-family review catches more issues
 - **Missing escalation paths** — fast-tier agent stuck with no handoff route
 - **Scope creep** — agent with tools or filesystem access it does not need
 - **Redundant agents** — overlapping work that could consolidate
