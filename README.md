@@ -119,6 +119,21 @@ Example prompts:
 - "Add a security specialist to my existing agent team"
 - "Which model tier should I use for my tester agent?"
 
+#### addressing-pr-review-comments
+
+Works through inline review comments on a pull request: assesses each one's validity, makes the code changes that are warranted, and replies to every thread with a one-line explanation of what was done (or why it was declined).
+
+```bash
+npx skills add mattobee/skills --skill addressing-pr-review-comments
+```
+
+Example prompts:
+
+- "Address the review comments on my PR"
+- "Work through the feedback on this PR"
+- "What do the reviewers want changed?"
+- "Action the comments on PR #42"
+
 #### suggesting-next-steps
 
 Suggests prioritised next steps for a project based on git history, GitHub issues/PRs, tracking files, and project docs.
