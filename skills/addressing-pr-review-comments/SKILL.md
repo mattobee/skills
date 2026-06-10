@@ -86,13 +86,29 @@ If declining because the reviewer might be right but you disagree, say so plainl
 
 ## Track deferred work
 
-For each valid concern you are not fully resolving in this PR, create a GitHub issue:
+For each valid concern you are not fully resolving in this PR, capture it in a GitHub issue. Two steps, in order: search first, then create only if nothing already covers it.
+
+### 1. Search for an existing issue first
+
+Filing a duplicate is noise that erodes trust in the workflow, so always look before creating. `gh issue list --search` is keyword-based and easy to miss matches with, so search more than once:
+
+```
+gh issue list --state all --search 'keyword'
+```
+
+- Try a couple of phrasings — the concept, and the specific symbol/file/error involved (e.g. `enum drift` and `discoveryMethodSchema`).
+- Include closed issues (`--state all`). A closed "wontfix" / "works as intended" is a strong signal **not** to refile — surface it in the reply instead of reopening the debate.
+- Skim issues already opened from this PR in the current session so you don't file the same thing twice across threads.
+
+If a match exists, don't create a new issue. Reference it in the thread reply, and add a comment to it linking this PR and thread (`gh issue comment <n> --body '...'`) so the new occurrence is recorded against it.
+
+### 2. Create the issue if none exists
 
 ```
 gh issue create --title '...' --body '...' --label '...'
 ```
 
-Before creating, check the available labels (`gh label list`) and apply the ones that fit (e.g. `tech-debt`, `refactor`, `bug`, `good first issue`). Also do a quick check for an existing open issue covering the same thing (`gh issue list --search '...'`) so you don't file a duplicate — if one exists, reference it instead.
+Check the available labels (`gh label list`) and apply the ones that fit (e.g. `tech-debt`, `refactor`, `bug`, `good first issue`).
 
 Write the issue so it stands on its own after the PR is gone:
 
