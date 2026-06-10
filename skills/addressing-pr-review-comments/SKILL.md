@@ -82,6 +82,43 @@ Grounds for declining include:
 
 If declining because the reviewer might be right but you disagree, say so plainly in the reply and invite further discussion rather than dismissing.
 
+**Always file a tracking issue for valid points that are out of scope.** When a comment raises a legitimate concern that you decline (or act on only partially) because the fix is out of scope for this PR — too large, codebase-wide, a separate concern, or deferred by choice — create a GitHub issue capturing it before replying. This is not optional: a valid concern that isn't acted on in the PR must land somewhere durable, not just in a review thread that gets buried once the PR merges. The only declines that don't need an issue are those where there's nothing to revisit: the comment is factually wrong, a stylistic non-issue, a duplicate, or contradicts a convention the team has deliberately chosen (and won't change). If you're unsure whether a declined point is "valid enough" to track, err toward filing the issue. See "Track deferred work" below for how.
+
+## Track deferred work
+
+For each valid concern you are not fully resolving in this PR, capture it in a GitHub issue. Two steps, in order: search first, then create only if nothing already covers it.
+
+### 1. Search for an existing issue first
+
+Filing a duplicate is noise that erodes trust in the workflow, so always look before creating. `gh issue list --search` is keyword-based and easy to miss matches with, so search more than once:
+
+```
+gh issue list --state all --search 'keyword'
+```
+
+- Try a couple of phrasings — the concept, and the specific symbol/file/error involved (e.g. `enum drift` and `discoveryMethodSchema`).
+- Include closed issues (`--state all`). A closed "wontfix" / "works as intended" is a strong signal **not** to refile — surface it in the reply instead of reopening the debate.
+- Skim issues already opened from this PR in the current session so you don't file the same thing twice across threads.
+
+If a match exists, don't create a new issue. Reference it in the thread reply, and add a comment to it linking this PR and thread (`gh issue comment <n> --body '...'`) so the new occurrence is recorded against it.
+
+### 2. Create the issue if none exists
+
+```
+gh issue create --title '...' --body '...' --label '...'
+```
+
+Check the available labels (`gh label list`) and apply the ones that fit (e.g. `tech-debt`, `refactor`, `bug`, `good first issue`).
+
+Write the issue so it stands on its own after the PR is gone:
+
+- **Title** — specific and actionable, not "address review comment".
+- **Background** — what the concern is, with a link back to the PR (and the review thread if useful). A short code snippet of the current state helps.
+- **Why it wasn't fixed here** — one or two sentences on the scope boundary, so the next person understands the deferral was deliberate.
+- **Proposed change / acceptance criteria** — concrete enough that someone else could pick it up.
+
+Group related comments into one issue when they're facets of the same underlying problem (e.g. the same drift risk flagged on five lines → one issue, not five). Keep the resulting issue number(s) to hand — you'll reference them in the thread replies.
+
 ## Make the changes
 
 Group related changes together. Use the TodoWrite tool to track each thread and its decision so nothing slips.
@@ -131,6 +168,7 @@ After all replies are posted, give the user a short summary:
 
 - Number of threads acted on, declined, and asked for clarification
 - A brief list of any declined threads with the reason, so the user can spot anything they'd want to reconsider
+- Any tracking issues created for deferred-but-valid points, with their numbers
 - The PR URL, and a note if there are any threads still waiting on reviewer response (e.g., clarifying questions)
 
 ## Gotchas

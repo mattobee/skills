@@ -121,7 +121,7 @@ Example prompts:
 
 #### addressing-pr-review-comments
 
-Works through inline review comments on a pull request: assesses each one's validity, makes the code changes that are warranted, and replies to every thread with a one-line explanation of what was done (or why it was declined).
+Works through inline review comments on a pull request: assesses each one's validity, makes the code changes that are warranted, files tracking issues for valid points that are out of scope, and replies to every thread with a one-line explanation of what was done (or why it was declined).
 
 ```bash
 npx skills add mattobee/skills --skill addressing-pr-review-comments
