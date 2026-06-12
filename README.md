@@ -149,6 +149,21 @@ Example prompts:
 - "What's left to do on this feature?"
 - "Help me prioritise my backlog"
 
+#### preparing-meeting-notes
+
+Creates an Obsidian event note for each of the day's accepted calendar meetings, following the vault's event conventions and pre-populating a talking-points section grounded in prior meeting notes, related project notes, recent GitHub activity, and Slack threads. Useful as automated morning prep.
+
+```bash
+npx skills add mattobee/skills --skill preparing-meeting-notes
+```
+
+Example prompts:
+
+- "Prepare notes for today's meetings"
+- "Set up event notes for everything on my calendar today"
+- "Help me get ready for the day"
+- "Create meeting notes with talking points for my calls"
+
 ## License
 
 MIT
