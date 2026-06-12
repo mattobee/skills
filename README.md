@@ -149,6 +149,21 @@ Example prompts:
 - "What's left to do on this feature?"
 - "Help me prioritise my backlog"
 
+#### finding-contribution-opportunities
+
+Finds high-value places to contribute and be more visible: GitHub and Slack conversations where your expertise would add value (engage), plus your own in-flight work worth sharing (amplify). Ranks them and drafts suggested wording in your voice. Read-only — it never posts anything.
+
+```bash
+npx skills add mattobee/skills --skill finding-contribution-opportunities
+```
+
+Example prompts:
+
+- "Where can I add value this week?"
+- "What should I comment on?"
+- "Find me some opportunities to contribute"
+- "What have I done that's worth sharing?"
+
 #### preparing-meeting-notes
 
 Creates an Obsidian event note for each of the day's accepted calendar meetings, following the vault's event conventions and pre-populating a talking-points section grounded in prior meeting notes, related project notes, recent GitHub activity, and Slack threads. Useful as automated morning prep.
