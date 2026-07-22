@@ -149,6 +149,21 @@ Example prompts:
 - "What's left to do on this feature?"
 - "Help me prioritise my backlog"
 
+#### running-a-session-retro
+
+Runs a structured retrospective at the end of a work session: reconstructs the moments where output was wrong or had to be corrected, works out which were systemic rather than one-off, and upstreams durable mitigations (a test, a lint rule, a validator, a doc, or agent and skill instructions) into the layer that will actually stop them recurring. Analyses autonomously, presents findings for approval, then implements approved changes on a separate branch and draft PR.
+
+```bash
+npx skills add mattobee/skills --skill running-a-session-retro
+```
+
+Example prompts:
+
+- "Do a retro on this session"
+- "What did we learn? Should we upstream anything?"
+- "How do we stop this happening again?"
+- "Run a post-mortem on what went wrong here"
+
 #### preparing-meeting-notes
 
 Creates an Obsidian event note for each of the day's accepted calendar meetings, following the vault's event conventions and pre-populating a talking-points section grounded in prior meeting notes, related project notes, recent GitHub activity, and Slack threads. Useful as automated morning prep.
