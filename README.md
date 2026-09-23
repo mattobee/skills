@@ -119,6 +119,20 @@ Example prompts:
 - "Add a security specialist to my existing agent team"
 - "Which model tier should I use for my tester agent?"
 
+#### explaining-skill-influence
+
+Explains which skills informed the previous response and how each one materially influenced it. Includes a skill's Agent Plugin when ownership can be verified from source metadata.
+
+```bash
+npx skills add mattobee/skills --skill explaining-skill-influence
+```
+
+Example prompts:
+
+- "Which skills did you use?"
+- "How did those skills inform your response?"
+- "Explain the skill influence"
+
 #### addressing-pr-review-comments
 
 Works through inline review comments on a pull request: assesses each one's validity, makes the code changes that are warranted, files tracking issues for valid points that are out of scope, and replies to every thread with a one-line explanation of what was done (or why it was declined).
