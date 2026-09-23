@@ -33,7 +33,7 @@ Review the previous substantive response and the skill invocations that led to i
 
 Start with one of:
 
-- `Yes. I used:`
+- `I used:`
 - `No skills were invoked for that response.`
 - `I can't verify skill influence because the previous response or its skill
   invocation history isn't available.`
